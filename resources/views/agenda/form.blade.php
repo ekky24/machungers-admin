@@ -19,35 +19,36 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form class="form-horizontal" method="post" action="/berita">
+            <form class="form-horizontal" method="post" action="/agenda" enctype="multipart/form-data">
+              {{ csrf_field() }}
               <div class="box-body">
                 <div class="form-group">
                   <label for="judul" class="col-sm-2 control-label">Judul</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputEmail3" placeholder="Judul Agenda">
+                    <input type="text" class="form-control" id="inputEmail3" placeholder="Judul Agenda" name="judul">
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="konten" class="col-sm-2 control-label">Konten</label>
                   <div class="col-sm-10">
-                    <textarea class="form-control" rows="3" placeholder="Konten Agenda ..."></textarea>
+                    <textarea class="form-control" rows="3" placeholder="Konten Agenda ..." name="konten"></textarea>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="tanggal" class="col-sm-2 control-label">Tanggal Mulai</label>
                   <div class="col-sm-4">
-                      <input type="date" class="form-control">
+                      <input type="text" class="form-control" id="tgl-mulai" name="tgl_mulai">
                   </div>
                   <label for="tanggal" class="col-sm-2 control-label">Tanggal Selesai</label>
                   <div class="col-sm-4">
-                      <input type="text" class="form-control pull-right" id="reservation">
+                      <input type="text" class="form-control pull-right" id="tgl-selesai" name="tgl_selesai">
                   </div>
                 <!-- /.input group -->
               </div>
                 <div class="form-group">
                   <label for="konten" class="col-sm-2 control-label">Gambar</label>
                   <div class="col-sm-10">
-                    <input type="file" id="gambar">
+                    <input type="file" accept="image/*" name="gambar">
                   </div>
                 </div>
               </div>

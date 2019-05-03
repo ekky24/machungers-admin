@@ -27,7 +27,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> List</a></li>
+            <li><a href="/berita"><i class="fa fa-circle-o"></i> List</a></li>
             <li><a href="/berita/form"><i class="fa fa-circle-o"></i> Form</a></li>
           </ul>
         </li>

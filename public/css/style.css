@@ -1,11 +1,6 @@
-html, body{
-  padding: 0;
-  margin: 0;
+.btn-table {
+	background-color:transparent; 
+	padding-top: 0px; 
+	padding-bottom: 0px;
+	color: black;
 }
-html{
-  height: 100%;
-}
-body{
-  min-height: 100%;
-}
-

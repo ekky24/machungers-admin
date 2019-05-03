@@ -22,7 +22,7 @@
             <form class="form-horizontal" method="post" action="/berita">
               <div class="box-body">
                 <div class="form-group">
-                  <label for="judul" class="col-sm-2 control-label">Nama</label>
+                  <label for="judul" class="col-sm-2 control-label">Nama Departemen</label>
                   <div class="col-sm-10">
                     <input type="text" class="form-control" placeholder="Nama Departemen">
                   </div>
