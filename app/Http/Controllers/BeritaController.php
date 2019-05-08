@@ -21,6 +21,7 @@ class BeritaController extends Controller
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('berita');
     }
+    
     public function show_all() {
         $berita = $this->ref->getValue();
 

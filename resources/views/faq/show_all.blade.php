@@ -4,7 +4,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        List Agenda
+        List FAQ
       </h1>
     </section>
     <!-- Main content -->
@@ -13,15 +13,15 @@
         <div class="col-xs-12">
           <div class="box box-info">
             <div class="box-header">
-              <h3 class="box-title">Data Agenda</h3>
+              <h3 class="box-title">Data FAQ</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="data-table" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                  <th>Judul</th>
-                  <th>Konten</th>
+                  <th>Pertanyaan</th>
+                  <th>Jawaban</th>
                   <th>Tanggal Ubah</th>
                   <th>Action</th>
                 </tr>
@@ -29,12 +29,12 @@
                 <tbody>
                 @foreach($all_data as $row)
                 <tr>
-                  <td>{{ $row['judul'] }}</td>
-                  <td>{{ substr($row['konten'], 0, 50) . " ..." }}</td>
+                  <td>{{ substr($row['pertanyaan'], 0, 50) . " ..." }}</td>
+                  <td>{{ substr($row['jawaban'], 0, 50) . " ..." }}</td>
                   <td>{{ $row['last_edit'] }}</td>
                   <td><center>
-                    <a type="button" href="/agenda/edit/{{ $row['key'] }}" class="btn btn-table"><i class="fa fa-edit"></i></button>
-                    <a type="button" href="/agenda/delete/{{ $row['key'] }}" class="btn btn-table btn-delete"><i class="fa fa-trash"></i></button>
+                    <a type="button" href="/faq/edit/{{ $row['key'] }}" class="btn btn-table"><i class="fa fa-edit"></i></button>
+                    <a type="button" href="/faq/delete/{{ $row['key'] }}" class="btn btn-table btn-delete"><i class="fa fa-trash"></i></button>
                   </center></td>
                 </tr>
                 @endforeach

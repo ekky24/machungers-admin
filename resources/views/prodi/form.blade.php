@@ -4,7 +4,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Form Berita
+        Form Prodi
       </h1>
     </section>
 
@@ -15,40 +15,49 @@
           <!-- Horizontal Form -->
           <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">Input Prodi Baru</h3>
+              <h3 class="box-title">@isset($data) Ubah Data Prodi @else Input Prodi Baru @endif</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form class="form-horizontal" method="post" action="/berita">
+            <form class="form-horizontal" method="post" action="@isset($data) /prodi/{{ $data['key'] }} @else /prodi @endif" enctype="multipart/form-data">
+              {{ csrf_field() }}
               <div class="box-body">
                 <div class="form-group">
-                  <label for="judul" class="col-sm-2 control-label">Nama Prodi</label>
+                  <label for="nama" class="col-sm-2 control-label">Nama Prodi</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputEmail3" placeholder="Nama Prodi">
+                    <input type="text" class="form-control" id="inputEmail3" placeholder="Nama Prodi" name="nama" value="@isset($data) {{ $data['nama'] }} @endif">
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="judul" class="col-sm-2 control-label">Pilih Fakultas</label>
                   <div class="col-sm-10">
-                    <select class="form-control">
-                      <option>option 1</option>
-                      <option>option 2</option>
-                      <option>option 3</option>
-                      <option>option 4</option>
-                      <option>option 5</option>
+                    <select class="form-control" name="fakultas">
+                      @isset($data)
+                        @foreach($all_fakultas as $row)
+                        @if($row['key'] == $data['fakultas'])
+                        <option value="{{ $row['key'] }}" selected>{{ $row['nama'] }}</option>
+                        @else
+                        <option value="{{ $row['key'] }}">{{ $row['nama'] }}</option>
+                        @endif
+                        @endforeach
+                      @else
+                        @foreach($all_fakultas as $row)
+                        <option value="{{ $row['key'] }}">{{ $row['nama'] }}</option>
+                        @endforeach
+                      @endif
                   </select>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="konten" class="col-sm-2 control-label">Profil</label>
                   <div class="col-sm-10">
-                    <textarea class="form-control" rows="3" placeholder="Profil Prodi ..."></textarea>
+                    <textarea class="form-control" rows="3" placeholder="Profil Prodi ..." name="profil">@isset($data) {{ $data['profil'] }} @endif</textarea>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="konten" class="col-sm-2 control-label">Gambar</label>
                   <div class="col-sm-10">
-                    <input type="file" id="gambar">
+                    <input type="file" name="gambar">
                   </div>
                 </div>
               </div>

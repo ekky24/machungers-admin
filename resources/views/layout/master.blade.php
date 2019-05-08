@@ -112,7 +112,7 @@
         e.preventDefault()
         Swal.fire({
           title: 'Apakah anda yakin?',
-          text: "You won't be able to revert this!",
+          text: "Data yang telah dihapus tidak bisa dikembalikan lagi.",
           type: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',

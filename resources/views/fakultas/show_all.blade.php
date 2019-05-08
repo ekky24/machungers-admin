@@ -23,6 +23,7 @@
                   <th>Nama Fakultas</th>
                   <th>Profil</th>
                   <th>Tanggal Ubah</th>
+                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -31,6 +32,10 @@
                   <td>{{ $row['nama'] }}</td>
                   <td>{{ $row['profil'] }}</td>
                   <td>{{ $row['last_edit'] }}</td>
+                  <td><center>
+                    <a type="button" href="/fakultas/edit/{{ $row['key'] }}" class="btn btn-table"><i class="fa fa-edit"></i></button>
+                    <a type="button" href="/fakultas/delete/{{ $row['key'] }}" class="btn btn-table btn-delete"><i class="fa fa-trash"></i></button>
+                  </center></td>
                 </tr>
                 @endforeach
                 </tbody>

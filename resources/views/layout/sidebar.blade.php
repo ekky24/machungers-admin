@@ -39,7 +39,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> List</a></li>
+            <li><a href="/agenda"><i class="fa fa-circle-o"></i> List</a></li>
             <li><a href="/agenda/form"><i class="fa fa-circle-o"></i> Form</a></li>
           </ul>
         </li>
@@ -51,7 +51,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> List</a></li>
+            <li><a href="/fakultas"><i class="fa fa-circle-o"></i> List</a></li>
             <li><a href="/fakultas/form"><i class="fa fa-circle-o"></i> Form</a></li>
           </ul>
         </li>
@@ -63,7 +63,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> List</a></li>
+            <li><a href="/prodi"><i class="fa fa-circle-o"></i> List</a></li>
             <li><a href="/prodi/form"><i class="fa fa-circle-o"></i> Form</a></li>
           </ul>
         </li>
@@ -75,7 +75,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> List</a></li>
+            <li><a href="/lifeatmachung"><i class="fa fa-circle-o"></i> List</a></li>
             <li><a href="/lifeatmachung/form"><i class="fa fa-circle-o"></i> Form</a></li>
           </ul>
         </li>
@@ -87,7 +87,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> List</a></li>
+            <li><a href="/faq"><i class="fa fa-circle-o"></i> List</a></li>
             <li><a href="/faq/form"><i class="fa fa-circle-o"></i> Form</a></li>
           </ul>
         </li>
@@ -99,7 +99,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> List</a></li>
+            <li><a href="/user"><i class="fa fa-circle-o"></i> List</a></li>
             <li><a href="/user/form"><i class="fa fa-circle-o"></i> Form</a></li>
           </ul>
         </li>

@@ -15,33 +15,33 @@
           <!-- Horizontal Form -->
           <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">Input Agenda Baru</h3>
+              <h3 class="box-title">@isset($data) Ubah Data Agenda @else Input Agenda Baru @endif</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form class="form-horizontal" method="post" action="/agenda" enctype="multipart/form-data">
+            <form class="form-horizontal" method="post" action="@isset($data) /agenda/{{ $data['key'] }} @else /agenda @endif" enctype="multipart/form-data">
               {{ csrf_field() }}
               <div class="box-body">
                 <div class="form-group">
                   <label for="judul" class="col-sm-2 control-label">Judul</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputEmail3" placeholder="Judul Agenda" name="judul">
+                    <input type="text" class="form-control" id="inputEmail3" placeholder="Judul Agenda" name="judul" value="@isset($data) {{ $data['judul'] }} @endif">
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="konten" class="col-sm-2 control-label">Konten</label>
                   <div class="col-sm-10">
-                    <textarea class="form-control" rows="3" placeholder="Konten Agenda ..." name="konten"></textarea>
+                    <textarea class="form-control" rows="3" placeholder="Konten Agenda ..." name="konten">@isset($data) {{ $data['judul'] }} @endif</textarea>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="tanggal" class="col-sm-2 control-label">Tanggal Mulai</label>
                   <div class="col-sm-4">
-                      <input type="text" class="form-control" id="tgl-mulai" name="tgl_mulai">
+                      <input type="text" class="form-control" id="tgl-mulai" name="tgl_mulai" value="@isset($data) {{ $data['tgl_mulai'] }} @endif">
                   </div>
                   <label for="tanggal" class="col-sm-2 control-label">Tanggal Selesai</label>
                   <div class="col-sm-4">
-                      <input type="text" class="form-control pull-right" id="tgl-selesai" name="tgl_selesai">
+                      <input type="text" class="form-control pull-right" id="tgl-selesai" name="tgl_selesai" value="@isset($data) {{ $data['tgl_selesai'] }} @endif">
                   </div>
                 <!-- /.input group -->
               </div>
