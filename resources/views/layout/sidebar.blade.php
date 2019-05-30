@@ -103,6 +103,20 @@
             <li><a href="/user/form"><i class="fa fa-circle-o"></i> Form</a></li>
           </ul>
         </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-edit"></i> <span>Push Notification</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/push_all/form"><i class="fa fa-circle-o"></i> Semua</a></li>
+            <li><a href="/push_fakultas/form"><i class="fa fa-circle-o"></i> Fakultas</a></li>
+            <li><a href="/push_prodi/form"><i class="fa fa-circle-o"></i> Prodi</a></li>
+            <li><a href="/push_individu/form"><i class="fa fa-circle-o"></i> Individu</a></li>
+          </ul>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->

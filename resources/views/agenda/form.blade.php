@@ -31,7 +31,7 @@
                 <div class="form-group">
                   <label for="konten" class="col-sm-2 control-label">Konten</label>
                   <div class="col-sm-10">
-                    <textarea class="form-control" rows="3" placeholder="Konten Agenda ..." name="konten">@isset($data) {{ $data['judul'] }} @endif</textarea>
+                    <textarea class="form-control" rows="3" placeholder="Konten Agenda ..." name="konten">@isset($data) {{ $data['konten'] }} @endif</textarea>
                   </div>
                 </div>
                 <div class="form-group">

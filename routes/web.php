@@ -53,7 +53,31 @@ Route::post('/faq','FaqController@simpan');
 Route::post('/faq/{key}','FaqController@simpan_edit');
 
 Route::get('/lifeatmachung/form','LifeAtMaChungController@form');
+Route::get('/lifeatmachung','LifeAtMaChungController@show_all');
+Route::get('/lifeatmachung/edit/{key}','LifeAtMaChungController@edit');
+Route::get('/lifeatmachung/delete/{key}','LifeAtMaChungController@delete');
+Route::get('/lifeatmachung_upload/delete/{key}','LifeAtMaChungController@delete_upload');
+Route::post('/lifeatmachung','LifeAtMaChungController@simpan');
+Route::post('/lifeatmachung_upload','LifeAtMaChungController@simpan_upload');
+Route::post('/lifeatmachung/{key}','LifeAtMaChungController@simpan_edit');
 
 Route::get('/user/form','UserController@form');
 
 Route::get('/mahasiswa/form','MahasiswaController@form');
+Route::get('/mahasiswa','MahasiswaController@show_all');
+Route::get('/mahasiswa/edit/{key}','MahasiswaController@edit');
+Route::get('/mahasiswa/delete/{key}','MahasiswaController@delete');
+Route::get('/mahasiswa_upload/delete/{key}','MahasiswaController@delete_upload');
+Route::post('/mahasiswa','MahasiswaController@simpan');
+Route::post('/mahasiswa_upload','MahasiswaController@simpan_upload');
+Route::post('/mahasiswa/{key}','MahasiswaController@simpan_edit');
+
+Route::get('/push_all/form','NotificationController@form_push_all');
+Route::get('/push_fakultas/form','NotificationController@form_push_fakultas');
+Route::get('/push_prodi/form','NotificationController@form_push_prodi');
+Route::get('/push_individu/form','NotificationController@form_push_individu');
+Route::get('/push','NotificationController@show_all');
+Route::post('/push_all','NotificationController@simpan');
+Route::post('/push_fakultas','NotificationController@simpan');
+Route::post('/push_prodi','NotificationController@simpan');
+Route::post('/push_individu','NotificationController@simpan');
