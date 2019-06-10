@@ -19,6 +19,7 @@ class MahasiswaController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('mahasiswa');
+        return $this->middleware('auth');
     }
 
     public function show_all() {

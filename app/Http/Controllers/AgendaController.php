@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Kreait\Firebase;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
+use Illuminate\Support\Facades\Storage;
 
 class AgendaController extends Controller
 {
@@ -19,6 +20,7 @@ class AgendaController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('agenda');
+        return $this->middleware('auth');
     }
 
 	public function show_all() {

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Kreait\Firebase;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
+use Illuminate\Support\Facades\Storage;
 
 class NewsletterController extends Controller
 {
@@ -18,36 +19,56 @@ class NewsletterController extends Controller
             ->withServiceAccount($serviceAccount)
             ->create();
         $this->database = $firebase->getDatabase();
-        $this->ref = $this->database->getReference('mahasiswa');
+        $this->ref = $this->database->getReference('newsletter');
+        return $this->middleware('auth');
     }
 
     public function show_all() {
         $data = $this->ref->getValue();
-        $fakultas_ref = $this->database->getReference('fakultas');
 
         foreach ($data as $key => $row) {
             $row['key'] = $key;
-            $row['nama_fakultas'] = $fakultas_ref->getChild($row['fakultas'])->getValue()['nama'];
             $all_data[] = $row;
         }
-        return view('mahasiswa.show_all', compact('all_data'));
+        return view('newsletter.show_all', compact('all_data'));
     }
 
     public function form() {
-    	$ref_fakultas = $this->database->getReference('fakultas');
-    	$ref_prodi = $this->database->getReference('prodi');
-        $data_fakultas = $ref_fakultas->getValue();
-        $data_prodi = $ref_prodi->getValue();
+        return view('newsletter.form');
+    }
 
-        foreach ($data_fakultas as $key => $row) {
-            $row['key'] = $key;
-            $all_fakultas[] = $row;
+    public function simpan(Request $request) {
+        // PERLU UBAH KONFIGURASI DI PHP.INI (POST_SIZE DAN MAX UPLOAD SIZE)
+        $this->validate($request , [
+            'pdf' => 'required',
+        ]);
+
+        date_default_timezone_set('Asia/Jakarta');
+        $now = date('d/m/Y h:i:s a', time());
+        
+        if ($request->hasFile('pdf')) {
+            $filenameWithExt = $request->file('pdf')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('pdf')->getClientOriginalExtension();
+            $fileNameToStore = time().'.'.$extension;
+            $path = $request->file('pdf')->storeAs('/public/newsletter', $fileNameToStore);
+            $nama = $fileNameToStore;
         }
 
-        foreach ($data_prodi as $key => $row) {
-            $row['key'] = $key;
-            $all_prodi[] = $row;
-        }
-        return view('mahasiswa.form', compact('all_fakultas', 'all_prodi'));
+        $key = $this->ref->push()->getKey();
+        $this->ref->getChild($key)->set([
+            'nama' => $nama,
+            'path' => $path,
+            'last_edit' => $now
+        ]);
+
+        return redirect('/newsletter')->with('success', 'Newsletter berhasil diterbitkan');
+    }
+
+    public function delete($id) {
+        $data = $this->database->getReference('newsletter/' . $id)->getValue();
+        Storage::delete($data['path']);
+        $this->ref->getChild($id)->remove();
+        return redirect('/newsletter')->with('success', 'Newsletter berhasil dihapus');
     }
 }

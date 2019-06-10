@@ -52,9 +52,9 @@
     @yield('content')
       <footer class="main-footer">
         <div class="pull-right hidden-xs">
-          <b>Version</b> 2.4.0
+          <b>Theme by </b><a href="https://adminlte.io">Almsaeed Studio</a>
         </div>
-        <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
+        <strong>Copyright &copy; 2019 Universitas Ma Chung.</strong> All rights
         reserved.
       </footer>
 

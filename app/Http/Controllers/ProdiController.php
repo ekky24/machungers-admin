@@ -19,6 +19,7 @@ class ProdiController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('prodi');
+        return $this->middleware('auth');
     }
 
     public function show_all() {

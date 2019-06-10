@@ -19,6 +19,7 @@ class FakultasController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('fakultas');
+        return $this->middleware('auth');
     }
 
 	public function show_all() {

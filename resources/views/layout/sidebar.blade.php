@@ -5,11 +5,10 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">MAIN NAVIGATION</li>
         <li><a href="#"><i class="fa fa-book"></i> <span>Dashboard</span></a></li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-edit"></i> <span>Mahasiswa</span>
+            <i class="fa fa-users"></i> <span>Mahasiswa</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -21,7 +20,7 @@
         </li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-edit"></i> <span>Berita</span>
+            <i class="fa fa-newspaper-o"></i> <span>Berita</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -33,7 +32,7 @@
         </li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-edit"></i> <span>Agenda</span>
+            <i class="fa fa-calendar"></i> <span>Agenda</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -45,7 +44,19 @@
         </li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-edit"></i> <span>Fakultas</span>
+            <i class="fa fa-file-text"></i> <span>Newsletter</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/newsletter"><i class="fa fa-circle-o"></i> List</a></li>
+            <li><a href="/newsletter/form"><i class="fa fa-circle-o"></i> Form</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-building"></i> <span>Fakultas</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -57,7 +68,7 @@
         </li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-edit"></i> <span>Prodi</span>
+            <i class="fa fa-id-card"></i> <span>Prodi</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -69,7 +80,7 @@
         </li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-edit"></i> <span>Life at Ma Chung</span>
+            <i class="fa fa-info-circle"></i> <span>Life at Ma Chung</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -81,7 +92,7 @@
         </li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-edit"></i> <span>FAQ</span>
+            <i class="fa fa-question-circle"></i> <span>FAQ</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -105,7 +116,7 @@
         </li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-edit"></i> <span>Push Notification</span>
+            <i class="fa fa-bullhorn"></i> <span>Push Notification</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>

@@ -19,6 +19,7 @@ class NotificationController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('push_notification');
+        return $this->middleware('auth');
     }
 
     public function show_all() {

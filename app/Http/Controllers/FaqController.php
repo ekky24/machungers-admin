@@ -19,6 +19,7 @@ class FaqController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('faq');
+        return $this->middleware('auth');
     }
 
     public function show_all() {

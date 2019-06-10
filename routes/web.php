@@ -12,7 +12,12 @@
 */
 
 Route::get('/', function () {
-    return view('index');
+    if (auth()->check()) {
+        return view('index');
+     }
+     else {
+         return redirect('/login');
+     }
 });
 
 Route::get('/firebase','FirebaseController@index');
@@ -81,3 +86,13 @@ Route::post('/push_all','NotificationController@simpan');
 Route::post('/push_fakultas','NotificationController@simpan');
 Route::post('/push_prodi','NotificationController@simpan');
 Route::post('/push_individu','NotificationController@simpan');
+
+Route::get('/newsletter/form','NewsletterController@form');
+Route::get('/newsletter','NewsletterController@show_all');
+Route::get('/newsletter/delete/{key}','NewsletterController@delete');
+Route::post('/newsletter','NewsletterController@simpan');
+
+Route::get('/login', 'SessionController@create');
+Route::get('/logout', 'SessionController@logout');
+Route::post('/session', 'SessionController@store');
+Route::post('login', [ 'as' => 'login', 'uses' => 'SessionController@create']);

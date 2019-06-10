@@ -20,6 +20,7 @@ class BeritaController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('berita');
+        return $this->middleware('auth');
     }
     
     public function show_all() {
