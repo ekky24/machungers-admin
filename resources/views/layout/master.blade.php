@@ -124,6 +124,13 @@
           }
         })
       })
+
+      setTimeout(function() {
+        $('.alert').slideDown(1000)
+        setTimeout(function() {
+          $('.alert').slideUp(1000)
+        }, 3000)
+      }, 1000)
   })(jQuery);
 </script>
 </body>

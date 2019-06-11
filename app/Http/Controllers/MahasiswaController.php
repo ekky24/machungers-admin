@@ -19,7 +19,7 @@ class MahasiswaController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('mahasiswa');
-        return $this->middleware('auth');
+        return $this->middleware('usersession');
     }
 
     public function show_all() {
@@ -87,7 +87,8 @@ class MahasiswaController extends Controller
             'fakultas' => $request->input('fakultas'),
             'prodi' => $request->input('prodi'),
             'img_url' => $path,
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/mahasiswa')->with('success', 'Mahasiswa berhasil ditambahkan');
@@ -148,7 +149,8 @@ class MahasiswaController extends Controller
             'fakultas' => $request->input('fakultas'),
             'prodi' => $request->input('prodi'),
             'img_url' => $path,
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/mahasiswa')->with('success', 'Mahasiswa berhasil diubah');

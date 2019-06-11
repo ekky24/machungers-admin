@@ -20,7 +20,7 @@ class AgendaController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('agenda');
-        return $this->middleware('auth');
+        return $this->middleware('usersession');
     }
 
 	public function show_all() {
@@ -68,7 +68,8 @@ class AgendaController extends Controller
             'tgl_mulai' => $request->input('tgl_mulai'),
             'tgl_selesai' => $request->input('tgl_selesai'),
             'img_url' => $path,
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/agenda')->with('success', 'Agenda berhasil diterbitkan');
@@ -110,7 +111,8 @@ class AgendaController extends Controller
             'tgl_mulai' => $request->input('tgl_mulai'),
             'tgl_selesai' => $request->input('tgl_selesai'),
             'img_url' => $path,
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/agenda')->with('success', 'Agenda berhasil diubah');

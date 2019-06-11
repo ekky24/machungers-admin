@@ -20,7 +20,7 @@ class BeritaController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('berita');
-        return $this->middleware('auth');
+        return $this->middleware('usersession');
     }
     
     public function show_all() {
@@ -63,7 +63,8 @@ class BeritaController extends Controller
             'judul' => $request->input('judul'),
             'konten' => $request->input('konten'),
             'img_url' => $path,
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/berita')->with('success', 'Berita berhasil diterbitkan');
@@ -101,7 +102,8 @@ class BeritaController extends Controller
             'judul' => $request->input('judul'),
             'konten' => $request->input('konten'),
             'img_url' => $path,
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/berita')->with('success', 'Berita berhasil diubah');

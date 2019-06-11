@@ -19,7 +19,7 @@ class NotificationController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('push_notification');
-        return $this->middleware('auth');
+        return $this->middleware('usersession');
     }
 
     public function show_all() {
@@ -82,7 +82,8 @@ class NotificationController extends Controller
                 'konten' => $request->input('konten'),
                 'nim' => $request->input('nim'),
                 'type' => 'individu',
-                'last_edit' => $now
+                'last_edit' => $now,
+                'edited_by' => session()->get('authenticated')['key'],
             ]);
         }
         elseif($request->has('fakultas')) {
@@ -91,7 +92,8 @@ class NotificationController extends Controller
                 'konten' => $request->input('konten'),
                 'fakultas' => $request->input('fakultas'),
                 'type' => 'fakultas',
-                'last_edit' => $now
+                'last_edit' => $now,
+                'edited_by' => session()->get('authenticated')['key'],
             ]);
         }
         elseif($request->has('prodi')) {
@@ -100,7 +102,8 @@ class NotificationController extends Controller
                 'konten' => $request->input('konten'),
                 'prodi' => $request->input('prodi'),
                 'type' => 'prodi',
-                'last_edit' => $now
+                'last_edit' => $now,
+                'edited_by' => session()->get('authenticated')['key'],
             ]);
         }
         else {
@@ -108,7 +111,8 @@ class NotificationController extends Controller
                 'judul' => $request->input('judul'),
                 'konten' => $request->input('konten'),
                 'type' => 'all',
-                'last_edit' => $now
+                'last_edit' => $now,
+                'edited_by' => session()->get('authenticated')['key'],
             ]);
         }
 

@@ -20,7 +20,7 @@ class NewsletterController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('newsletter');
-        return $this->middleware('auth');
+        return $this->middleware('usersession');
     }
 
     public function show_all() {
@@ -59,7 +59,8 @@ class NewsletterController extends Controller
         $this->ref->getChild($key)->set([
             'nama' => $nama,
             'path' => $path,
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/newsletter')->with('success', 'Newsletter berhasil diterbitkan');

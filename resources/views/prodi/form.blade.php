@@ -2,6 +2,7 @@
 @section('content')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
+    @include('layout.message')
     <section class="content-header">
       <h1>
         Form Prodi

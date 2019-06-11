@@ -14,8 +14,6 @@
   <link rel="stylesheet" href="/bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="/css/style.css">
   <!-- iCheck -->
   <link rel="stylesheet" href="/plugins/iCheck/square/blue.css">
 
@@ -78,6 +76,13 @@
       radioClass: 'iradio_square-blue',
       increaseArea: '20%' /* optional */
     });
+
+    setTimeout(function() {
+        $('.alert').slideDown(1000)
+        setTimeout(function() {
+          $('.alert').slideUp(1000)
+        }, 3000)
+      }, 1000)
   });
 </script>
 </body>

@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    if (auth()->check()) {
+    if (request()->session()->has('authenticated')) {
         return view('index');
      }
      else {
@@ -94,5 +94,7 @@ Route::post('/newsletter','NewsletterController@simpan');
 
 Route::get('/login', 'SessionController@create');
 Route::get('/logout', 'SessionController@logout');
+Route::get('/setting/form', 'SessionController@setting');
 Route::post('/session', 'SessionController@store');
+Route::post('/setting/{key}', 'SessionController@simpan_setting');
 Route::post('login', [ 'as' => 'login', 'uses' => 'SessionController@create']);

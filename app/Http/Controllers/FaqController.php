@@ -19,7 +19,7 @@ class FaqController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('faq');
-        return $this->middleware('auth');
+        return $this->middleware('usersession');
     }
 
     public function show_all() {
@@ -50,7 +50,8 @@ class FaqController extends Controller
         $this->ref->getChild($key)->set([
             'pertanyaan' => $request->input('pertanyaan'),
             'jawaban' => $request->input('jawaban'),
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/faq')->with('success', 'FAQ berhasil diterbitkan');
@@ -74,7 +75,8 @@ class FaqController extends Controller
         $this->ref->getChild($id)->set([
             'pertanyaan' => $request->input('pertanyaan'),
             'jawaban' => $request->input('jawaban'),
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/faq')->with('success', 'FAQ berhasil diubah');

@@ -20,7 +20,7 @@ class LifeAtMaChungController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('lifeatmachung');
-        return $this->middleware('auth');
+        return $this->middleware('usersession');
     }
 
     public function show_all() {
@@ -56,7 +56,8 @@ class LifeAtMaChungController extends Controller
         $this->ref->getChild($key)->set([
             'judul' => $request->input('judul'),
             'konten' => $request->input('konten'),
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/lifeatmachung')->with('success', 'Konten berhasil diterbitkan');
@@ -83,7 +84,8 @@ class LifeAtMaChungController extends Controller
         $key = $ref_upload->push()->getKey();
         $ref_upload->getChild($key)->set([
             'img_url' => $path,
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/lifeatmachung/form')->with('success', 'Media berhasil diupload');
@@ -115,7 +117,8 @@ class LifeAtMaChungController extends Controller
         $this->ref->getChild($id)->set([
             'judul' => $request->input('judul'),
             'konten' => $request->input('konten'),
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/lifeatmachung')->with('success', 'Konten berhasil diubah');

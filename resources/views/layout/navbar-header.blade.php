@@ -19,27 +19,19 @@
         <ul class="nav navbar-nav">
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="hidden-xs">Alexander Pierce <span class="caret"></span></span>
+            <a href="#">
+              <span class="hidden-xs">{{ session()->get('authenticated')['username'] }}</span>
             </a>
-            <ul class="dropdown-menu">
-              <!-- User image -->
-              <li class="user-header">
-                <p>
-                  Alexander Pierce - Web Developer
-                  <small>Admin</small>
-                </p>
-              </li>
-              <!-- Menu Footer-->
-              <li class="user-footer">
-                <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
-                </div>
-                <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                </div>
-              </li>
-            </ul>
+          </li>
+          <li class="dropdown messages-menu">
+            <a href="/setting/form">
+              <i class="fa fa-gear"></i>
+            </a>
+          </li>
+          <li class="dropdown messages-menu">
+            <a href="/logout">
+              <i class="fa fa-sign-out"></i>
+            </a>
           </li>
         </ul>
       </div>

@@ -19,7 +19,7 @@ class ProdiController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('prodi');
-        return $this->middleware('auth');
+        return $this->middleware('usersession');
     }
 
     public function show_all() {
@@ -75,7 +75,8 @@ class ProdiController extends Controller
             'fakultas' => $request->input('fakultas'),
             'profil' => $request->input('profil'),
             'img_url' => $path,
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/prodi')->with('success', 'Prodi berhasil diterbitkan');
@@ -123,7 +124,8 @@ class ProdiController extends Controller
             'fakultas' => $request->input('fakultas'),
             'profil' => $request->input('profil'),
             'img_url' => $path,
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/prodi')->with('success', 'Prodi berhasil diubah');

@@ -5,7 +5,7 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li><a href="#"><i class="fa fa-book"></i> <span>Dashboard</span></a></li>
+        <li><a href="/"><i class="fa fa-book"></i> <span>Dashboard</span></a></li>
         <li class="treeview">
           <a href="#">
             <i class="fa fa-users"></i> <span>Mahasiswa</span>
@@ -14,7 +14,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/forms/general.html"><i class="fa fa-circle-o"></i> List</a></li>
+            <li><a href="/mahasiswa"><i class="fa fa-circle-o"></i> List</a></li>
             <li><a href="/mahasiswa/form"><i class="fa fa-circle-o"></i> Form</a></li>
           </ul>
         </li>

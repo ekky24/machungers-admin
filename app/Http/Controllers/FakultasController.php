@@ -19,7 +19,7 @@ class FakultasController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('fakultas');
-        return $this->middleware('auth');
+        return $this->middleware('usersession');
     }
 
 	public function show_all() {
@@ -63,7 +63,8 @@ class FakultasController extends Controller
             'nama' => $request->input('nama'),
             'profil' => $request->input('profil'),
             'img_url' => $path,
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/fakultas')->with('success', 'Fakultas berhasil ditambahkan');
@@ -101,7 +102,8 @@ class FakultasController extends Controller
             'nama' => $request->input('nama'),
             'profil' => $request->input('profil'),
             'img_url' => $path,
-            'last_edit' => $now
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/fakultas')->with('success', 'Fakultas berhasil diubah');

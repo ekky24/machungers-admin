@@ -5,6 +5,9 @@
 	color: black;
 }
 
-.login-box-center {
-  	
+.alert {
+  	width: 20%;
+  	position: absolute;
+  	z-index: 1000;
+  	left: 50%;
 }

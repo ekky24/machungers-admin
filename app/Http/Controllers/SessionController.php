@@ -21,7 +21,7 @@ class SessionController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('user');
-        return $this->middleware('guest')->except(['logout', 'ubah_pass', 'store_pass']);
+        return $this->middleware('usersession')->except(['create', 'store']);
     }
 
     public function create() {
@@ -38,7 +38,19 @@ class SessionController extends Controller
 
         foreach ($data as $key => $row) {
             if($row['username'] == $request->input('username') and $row['password'] == $request->input('password')) {
-            	$request->session()->put('authenticated', $key);
+                $data = $this->database->getReference('user/' . $key)->getValue();
+                $data['key'] = $key;
+            	$request->session()->put('authenticated', $data);
+
+                date_default_timezone_set('Asia/Jakarta');
+                $now = date('d/m/Y h:i:s a', time());
+                $this->ref->getChild($key)->set([
+                    'username' => $data['username'],
+                    'password' => $data['password'],
+                    'level' => $data['level'],
+                    'kontak' => $data['kontak'],
+                    'last_login' => $now,
+                ]);
             	return redirect('/');
             }
         }
@@ -48,8 +60,56 @@ class SessionController extends Controller
 	   	]);
     }
 
+    public function setting() {
+        $key = session()->get('authenticated')['key'];
+        $data = $this->database->getReference('user/' . $key)->getValue();
+        $data['key'] = $key;
+        return view('session.setting', compact('data'));
+    }
+
+    public function simpan_setting(Request $request, $id) {
+        $this->validate($request , [
+            'username' => 'required',
+            'kontak' => 'required',
+            'password_lama' => 'nullable',
+            'password_baru' => 'nullable',
+            'konfirmasi_password' => 'nullable',
+        ]);
+
+        $data = $this->database->getReference('user/' . $id)->getValue();
+        $password = $data['password'];
+
+        if($request->input('password_lama') != "" and $request->input('password_baru') != "" and $request->input('konfirmasi_password') != "") {
+            if($request->input('password_lama') == $data['password']) {
+                if($request->input('password_baru') == $request->input('konfirmasi_password')) {
+                    $password = $request->input('password_baru');
+                }
+                else {
+                    return back()->withErrors([
+                        'message' => 'Password baru dan konfirmasi tidak sama.'
+                    ]);
+                }
+            }
+            else {
+                return back()->withErrors([
+                    'message' => 'Password lama yang anda masukkan salah.'
+                ]);
+            }
+        }
+
+        $this->ref->getChild($id)->set([
+            'username' => $request->input('username'),
+            'kontak' => $request->input('kontak'),
+            'level' => $data['level'],
+            'last_login' => $data['last_login'],
+            'password' => $password,
+        ]);
+
+        return redirect('/setting/form')->with('success', 'Data berhasil diubah');
+    } 
+
     public function logout() {
-    	auth()->logout();
+    	session()->forget('authenticated');
     	return redirect('/');
     }
 }
