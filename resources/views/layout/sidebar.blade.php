@@ -102,9 +102,10 @@
             <li><a href="/faq/form"><i class="fa fa-circle-o"></i> Form</a></li>
           </ul>
         </li>
+        @if(session()->get('authenticated')['level'] == 'super')
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-edit"></i> <span>Informasi Kontak</span>
+            <i class="fa fa-user"></i> <span>Manage User </span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -114,6 +115,7 @@
             <li><a href="/user/form"><i class="fa fa-circle-o"></i> Form</a></li>
           </ul>
         </li>
+        @endif
         <li class="treeview">
           <a href="#">
             <i class="fa fa-bullhorn"></i> <span>Push Notification</span>
@@ -122,6 +124,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
+            <li><a href="/push"><i class="fa fa-circle-o"></i> List</a></li>
             <li><a href="/push_all/form"><i class="fa fa-circle-o"></i> Semua</a></li>
             <li><a href="/push_fakultas/form"><i class="fa fa-circle-o"></i> Fakultas</a></li>
             <li><a href="/push_prodi/form"><i class="fa fa-circle-o"></i> Prodi</a></li>

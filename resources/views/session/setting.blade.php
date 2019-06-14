@@ -26,7 +26,13 @@
                 <div class="form-group">
                   <label for="judul" class="col-sm-2 control-label">Username</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" placeholder="Username" name="username" value="@isset($data) {{ $data['username'] }} @endif">
+                    <input type="text" class="form-control" placeholder="Username" value="@isset($data) {{ $data['username'] }} @endif" disabled>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="judul" class="col-sm-2 control-label">Nama Departemen</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="Nama Departemen" value="@isset($data) {{ $data['nama_departemen'] }} @endif" disabled>
                   </div>
                 </div>
                 <div class="form-group">
@@ -53,6 +59,8 @@
                     <input type="password" class="form-control" placeholder="Konfirmasi Password Baru" name="konfirmasi_password">
                   </div>
                 </div>
+              <input type="hidden" name="username" value="@isset($data) {{ $data['username'] }} @endif">
+              <input type="hidden" name="nama_departemen" value="@isset($data) {{ $data['nama_departemen'] }} @endif">
               <div class="box-footer">
                 <button type="submit" class="btn btn-info pull-right">Submit</button>
               </div>

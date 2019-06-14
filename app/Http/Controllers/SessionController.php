@@ -37,7 +37,7 @@ class SessionController extends Controller
     	$data = $this->ref->getValue();
 
         foreach ($data as $key => $row) {
-            if($row['username'] == $request->input('username') and $row['password'] == $request->input('password')) {
+            if($row['username'] == $request->input('username') and Hash::check($request->input('password'), $row['password'])) {
                 $data = $this->database->getReference('user/' . $key)->getValue();
                 $data['key'] = $key;
             	$request->session()->put('authenticated', $data);
@@ -49,6 +49,7 @@ class SessionController extends Controller
                     'password' => $data['password'],
                     'level' => $data['level'],
                     'kontak' => $data['kontak'],
+                    'nama_departemen' => $data['nama_departemen'],
                     'last_login' => $now,
                 ]);
             	return redirect('/');
@@ -70,6 +71,7 @@ class SessionController extends Controller
     public function simpan_setting(Request $request, $id) {
         $this->validate($request , [
             'username' => 'required',
+            'nama_departemen' => 'required',
             'kontak' => 'required',
             'password_lama' => 'nullable',
             'password_baru' => 'nullable',
@@ -80,7 +82,7 @@ class SessionController extends Controller
         $password = $data['password'];
 
         if($request->input('password_lama') != "" and $request->input('password_baru') != "" and $request->input('konfirmasi_password') != "") {
-            if($request->input('password_lama') == $data['password']) {
+            if(Hash::check($request->input('password_lama'), $data['password'])) {
                 if($request->input('password_baru') == $request->input('konfirmasi_password')) {
                     $password = $request->input('password_baru');
                 }
@@ -99,10 +101,11 @@ class SessionController extends Controller
 
         $this->ref->getChild($id)->set([
             'username' => $request->input('username'),
+            'nama_departemen' => $request->input('nama_departemen'),
             'kontak' => $request->input('kontak'),
             'level' => $data['level'],
             'last_login' => $data['last_login'],
-            'password' => $password,
+            'password' => Hash::make($password),
         ]);
 
         return redirect('/setting/form')->with('success', 'Data berhasil diubah');

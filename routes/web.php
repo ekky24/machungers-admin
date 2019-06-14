@@ -67,6 +67,11 @@ Route::post('/lifeatmachung_upload','LifeAtMaChungController@simpan_upload');
 Route::post('/lifeatmachung/{key}','LifeAtMaChungController@simpan_edit');
 
 Route::get('/user/form','UserController@form');
+Route::get('/user','UserController@show_all');
+Route::get('/user/edit/{key}','UserController@edit');
+Route::get('/user/delete/{key}','UserController@delete');
+Route::post('/user','UserController@simpan');
+Route::post('/user/{key}','UserController@simpan_edit');
 
 Route::get('/mahasiswa/form','MahasiswaController@form');
 Route::get('/mahasiswa','MahasiswaController@show_all');

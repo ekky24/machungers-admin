@@ -77,10 +77,13 @@ class NotificationController extends Controller
         $key = $this->ref->push()->getKey();
         
         if ($request->has('nim')) {
+            $temp_nim = str_replace(' ', '', $request->input('nim'));
+            $nim = explode(",", $temp_nim);
+            
             $this->ref->getChild($key)->set([
                 'judul' => $request->input('judul'),
                 'konten' => $request->input('konten'),
-                'nim' => $request->input('nim'),
+                'nim' => $nim,
                 'type' => 'individu',
                 'last_edit' => $now,
                 'edited_by' => session()->get('authenticated')['key'],
