@@ -48,26 +48,6 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="fakultas" class="col-sm-2 control-label">Pilih Fakultas</label>
-                  <div class="col-sm-10">
-                    <select class="form-control" name="fakultas">
-                      @isset($data)
-                        @foreach($all_fakultas as $row)
-                        @if($row['key'] == $data['fakultas'])
-                        <option value="{{ $row['key'] }}" selected>{{ $row['nama'] }}</option>
-                        @else
-                        <option value="{{ $row['key'] }}">{{ $row['nama'] }}</option>
-                        @endif
-                        @endforeach
-                      @else
-                        @foreach($all_fakultas as $row)
-                        <option value="{{ $row['key'] }}">{{ $row['nama'] }}</option>
-                        @endforeach
-                      @endif
-                  </select>
-                  </div>
-                </div>
-                <div class="form-group">
                   <label for="prodi" class="col-sm-2 control-label">Pilih Prodi</label>
                   <div class="col-sm-10">
                     <select class="form-control" name="prodi">

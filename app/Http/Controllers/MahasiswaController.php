@@ -25,10 +25,12 @@ class MahasiswaController extends Controller
     public function show_all() {
         $data = $this->ref->getValue();
         $fakultas_ref = $this->database->getReference('fakultas');
+        $prodi_ref = $this->database->getReference('prodi');
 
         foreach ($data as $key => $row) {
+            $fakultas_key = $prodi_ref->getChild($row['prodi'])->getValue()['fakultas'];
             $row['key'] = $key;
-            $row['nama_fakultas'] = $fakultas_ref->getChild($row['fakultas'])->getValue()['nama'];
+            $row['nama_fakultas'] = $fakultas_ref->getChild($fakultas_key)->getValue()['nama'];
             $all_data[] = $row;
         }
         return view('mahasiswa.show_all', compact('all_data'));
@@ -59,7 +61,6 @@ class MahasiswaController extends Controller
             'nama' => 'required',
             'tempat_lahir' => 'required',
             'tgl_lahir' => 'required',
-            'fakultas' => 'required',
             'prodi' => 'required',
             'gambar' => 'nullable',
         ]);
@@ -82,9 +83,9 @@ class MahasiswaController extends Controller
         $this->ref->getChild($key)->set([
             'nim' => $request->input('nim'),
             'nama' => $request->input('nama'),
+            'password' => '25d55ad283aa400af464c76d713c07ad',
             'tempat_lahir' => $request->input('tempat_lahir'),
             'tgl_lahir' => $request->input('tgl_lahir'),
-            'fakultas' => $request->input('fakultas'),
             'prodi' => $request->input('prodi'),
             'img_url' => $path,
             'last_edit' => $now,
@@ -121,7 +122,6 @@ class MahasiswaController extends Controller
             'nama' => 'required',
             'tempat_lahir' => 'required',
             'tgl_lahir' => 'required',
-            'fakultas' => 'required',
             'prodi' => 'required',
             'gambar' => 'nullable',
         ]);
@@ -146,7 +146,6 @@ class MahasiswaController extends Controller
             'nama' => $request->input('nama'),
             'tempat_lahir' => $request->input('tempat_lahir'),
             'tgl_lahir' => $request->input('tgl_lahir'),
-            'fakultas' => $request->input('fakultas'),
             'prodi' => $request->input('prodi'),
             'img_url' => $path,
             'last_edit' => $now,
@@ -161,5 +160,66 @@ class MahasiswaController extends Controller
         Storage::delete($data['img_url']);
         $this->ref->getChild($id)->remove();
         return redirect('/mahasiswa')->with('success', 'Mahasiswa berhasil dihapus');
+    }
+
+    public function ajax_fakultas() {
+        $data = $this->ref->getValue();
+        $prodi_arr = [];
+        $prodi_arr_temp = [];
+        $sama = false;
+
+        // PENGHITUNGAN MAHASISWA BERDASARKAN PRODI
+        foreach ($data as $key => $row) {
+            $data = $this->database->getReference('prodi/' . $row['prodi'])->getValue();
+            array_push($prodi_arr_temp, $data);
+
+            if(count($prodi_arr) > 0) {
+                foreach ($prodi_arr as $i => $row_prodi) {
+                    if($row['prodi'] == $row_prodi[0]) {
+                        $sama = true;
+                        $prodi_arr[$i] = [$row['prodi'], $data['nama'], $row_prodi[2] + 1];
+                        break;
+                    }
+                }
+
+                if(!$sama) {
+                    array_push($prodi_arr, [$row['prodi'], $data['nama'], 1]);
+                }
+                $sama = false;
+            }
+            else {
+                array_push($prodi_arr, [$row['prodi'], $data['nama'], 1]);
+            }
+        }
+
+        $fakultas_arr = [];
+        $sama = false;
+        // PENGHITUNGAN MAHASISWA BERDASARKAN FAKULTAS
+        foreach ($prodi_arr as $i => $row_prodi) {
+            $data = $prodi_arr_temp[$i];
+            $data_fakultas = $this->database->getReference('fakultas/' . $data['fakultas'])->getValue();
+
+            if(count($fakultas_arr) > 0) {
+                foreach ($fakultas_arr as $i => $row_fakultas) {
+                    if($data['fakultas'] == $row_fakultas[0]) {
+                        $sama = true;
+                        $fakultas_arr[$i] = [$data['fakultas'], $data_fakultas['nama'], $row_fakultas[2] + $row_prodi[2]];
+                        break;
+                    }
+                }
+
+                if(!$sama) {
+                    array_push($fakultas_arr, [$data['fakultas'], $data_fakultas['nama'], $row_prodi[2]]);
+                }
+                $sama = false;
+            }
+            else {
+                array_push($fakultas_arr, [$data['fakultas'], $data_fakultas['nama'], $row_prodi[2]]);
+            }
+        }
+
+        $final_arr['prodi'] = $prodi_arr;
+        $final_arr['fakultas'] = $fakultas_arr;
+        return json_encode($final_arr);
     }
 }
