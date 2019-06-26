@@ -31,7 +31,7 @@
                 @foreach($all_berita as $row)
                 <tr>
                   <td>{{ $row['judul'] }}</td>
-                  <td>{{ $row['konten'] }}</td>
+                  <td>{{ substr($row['konten'], 0, 50) . " ..." }}</td>
                   <td>{{ $row['last_edit'] }}</td>
                   <td><center>
                     <a type="button" href="/berita/edit/{{ $row['key'] }}" class="btn btn-table"><i class="fa fa-edit"></i></button>
