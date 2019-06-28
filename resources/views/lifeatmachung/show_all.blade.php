@@ -18,7 +18,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="data-table" class="table table-bordered table-hover">
+              <table id="data-table2" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>Judul</th>

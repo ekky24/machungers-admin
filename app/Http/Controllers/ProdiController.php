@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Kreait\Firebase;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
+use Illuminate\Support\Facades\Storage;
 
 class ProdiController extends Controller
 {
@@ -74,7 +75,7 @@ class ProdiController extends Controller
             'nama' => $request->input('nama'),
             'fakultas' => $request->input('fakultas'),
             'profil' => $request->input('profil'),
-            'img_url' => $path,
+            'img_url' => substr($path, 7),
             'last_edit' => $now,
             'edited_by' => session()->get('authenticated')['key'],
         ]);
@@ -114,7 +115,7 @@ class ProdiController extends Controller
             $extension = $request->file('gambar')->getClientOriginalExtension();
             $fileNameToStore = time().'.'.$extension;
             $path = $request->file('gambar')->storeAs('/public/uploadimg', $fileNameToStore);
-            Storage::delete($data['img_url']);
+            Storage::delete('public/' . $data['img_url']);
         } else {
             $path = $data['img_url'];
         }
@@ -123,11 +124,18 @@ class ProdiController extends Controller
             'nama' => $request->input('nama'),
             'fakultas' => $request->input('fakultas'),
             'profil' => $request->input('profil'),
-            'img_url' => $path,
+            'img_url' => substr($path, 7),
             'last_edit' => $now,
             'edited_by' => session()->get('authenticated')['key'],
         ]);
 
         return redirect('/prodi')->with('success', 'Prodi berhasil diubah');
+    }
+
+    public function delete($id) {
+        $data = $this->database->getReference('prodi/' . $id)->getValue();
+        Storage::delete('public/' . $data['img_url']);
+        $this->ref->getChild($id)->remove();
+        return redirect('/prodi')->with('success', 'Prodi berhasil dihapus');
     }
 }

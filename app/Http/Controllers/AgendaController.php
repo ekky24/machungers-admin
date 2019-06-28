@@ -67,7 +67,7 @@ class AgendaController extends Controller
             'konten' => $request->input('konten'),
             'tgl_mulai' => $request->input('tgl_mulai'),
             'tgl_selesai' => $request->input('tgl_selesai'),
-            'img_url' => $path,
+            'img_url' => substr($path, 7),
             'last_edit' => $now,
             'edited_by' => session()->get('authenticated')['key'],
         ]);
@@ -100,7 +100,7 @@ class AgendaController extends Controller
             $extension = $request->file('gambar')->getClientOriginalExtension();
             $fileNameToStore = time().'.'.$extension;
             $path = $request->file('gambar')->storeAs('/public/uploadimg', $fileNameToStore);
-            Storage::delete($data['img_url']);
+            Storage::delete('public/' . $data['img_url']);
         } else {
             $path = $data['img_url'];
         }
@@ -110,7 +110,7 @@ class AgendaController extends Controller
             'konten' => $request->input('konten'),
             'tgl_mulai' => $request->input('tgl_mulai'),
             'tgl_selesai' => $request->input('tgl_selesai'),
-            'img_url' => $path,
+            'img_url' => substr($path, 7),
             'last_edit' => $now,
             'edited_by' => session()->get('authenticated')['key'],
         ]);
@@ -120,7 +120,7 @@ class AgendaController extends Controller
 
     public function delete($id) {
         $data = $this->database->getReference('agenda/' . $id)->getValue();
-        Storage::delete($data['img_url']);
+        Storage::delete('public/' . $data['img_url']);
         $this->ref->getChild($id)->remove();
         return redirect('/agenda')->with('success', 'Agenda berhasil dihapus');
     }

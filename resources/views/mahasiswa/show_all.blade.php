@@ -18,12 +18,12 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="data-table" class="table table-bordered table-hover">
+              <table id="data-table2" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>NIM</th>
                   <th>Nama</th>
-                  <th>Fakultas</th>
+                  <th>Prodi</th>
                   <th>Action</th>
                 </tr>
                 </thead>
@@ -32,7 +32,7 @@
                 <tr>
                   <td>{{ $row['nim'] }}</td>
                   <td>{{ $row['nama'] }}</td>
-                  <td>{{ $row['nama_fakultas'] }}</td>
+                  <td>{{ $row['nama_prodi'] }}</td>
                   <td><center>
                     <a type="button" href="/mahasiswa/edit/{{ $row['key'] }}" class="btn btn-table"><i class="fa fa-edit"></i></button>
                     <a type="button" href="/mahasiswa/delete/{{ $row['key'] }}" class="btn btn-table btn-delete"><i class="fa fa-trash"></i></button>

@@ -5,7 +5,7 @@
     @include('layout.message')
     <section class="content-header">
       <h1>
-        List Berita
+        List Fakultas
       </h1>
     </section>
     <!-- Main content -->
@@ -18,7 +18,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="data-table" class="table table-bordered table-hover">
+              <table id="data-table1" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>Nama Fakultas</th>
@@ -31,7 +31,7 @@
                 @foreach($all_data as $row)
                 <tr>
                   <td>{{ $row['nama'] }}</td>
-                  <td>{{ $row['profil'] }}</td>
+                  <td>@if(strlen($row['profil']) > 50) {{ substr($row['profil'], 0, 50) . " ..." }} @else {{ $row['profil'] }} @endif</td>
                   <td>{{ $row['last_edit'] }}</td>
                   <td><center>
                     <a type="button" href="/fakultas/edit/{{ $row['key'] }}" class="btn btn-table"><i class="fa fa-edit"></i></button>

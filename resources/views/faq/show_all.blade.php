@@ -18,7 +18,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="data-table" class="table table-bordered table-hover">
+              <table id="data-table1" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>Pertanyaan</th>
@@ -30,8 +30,8 @@
                 <tbody>
                 @foreach($all_data as $row)
                 <tr>
-                  <td>{{ substr($row['pertanyaan'], 0, 50) . " ..." }}</td>
-                  <td>{{ substr($row['jawaban'], 0, 50) . " ..." }}</td>
+                  <td>@if(strlen($row['pertanyaan']) > 50) {{ substr($row['pertanyaan'], 0, 50) . " ..." }} @else {{ $row['pertanyaan'] }} @endif</td>
+                  <td>@if(strlen($row['jawaban']) > 50) {{ substr($row['jawaban'], 0, 50) . " ..." }} @else {{ $row['jawaban'] }} @endif</td>
                   <td>{{ $row['last_edit'] }}</td>
                   <td><center>
                     <a type="button" href="/faq/edit/{{ $row['key'] }}" class="btn btn-table"><i class="fa fa-edit"></i></button>

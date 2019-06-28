@@ -95,6 +95,7 @@
 <!-- sweet alert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/date-euro.js"></script>
 <script>
   (function($) {
       //bootstrap WYSIHTML5 - text editor
@@ -106,7 +107,26 @@
         todayHighlight: true,
       })
 
-      $('#data-table').DataTable()
+      $('#data-table1').DataTable({
+        "columnDefs": [
+            { type: 'date-euro', targets: 2 }
+        ],
+        "order": [[ 2, "desc" ]]
+      })
+
+      $('#data-table2').DataTable({
+        "columnDefs": [
+            { type: 'date-euro', targets: 1 }
+        ],
+        "order": [[ 1, "desc" ]]
+      })
+
+      $('#data-table3').DataTable({
+        "columnDefs": [
+            { type: 'date-euro', targets: 3 }
+        ],
+        "order": [[ 3, "desc" ]]
+      })
 
       $('.btn-delete').click(function(e) {
         e.preventDefault()
@@ -138,7 +158,7 @@
         var dataCountProdi = []
         var dataLabelProdi = []
 
-        $.ajax({
+        var xhr = $.ajax({
           url: '/ajax_mahasiswa_fakultas',
           type:"GET",
           success:function(msg){

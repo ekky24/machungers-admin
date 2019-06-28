@@ -18,7 +18,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="data-table" class="table table-bordered table-hover">
+              <table id="data-table3" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>Judul</th>
@@ -31,7 +31,7 @@
                 @foreach($all_data as $row)
                 <tr>
                   <td>{{ $row['judul'] }}</td>
-                  <td>{{ substr($row['konten'], 0, 50) . " ..." }}</td>
+                  <td>@if(strlen($row['konten']) > 50) {{ substr($row['konten'], 0, 50) . " ..." }} @else {{ $row['konten'] }} @endif</td>
                   <td>{{ $row['type'] }}</td>
                   <td>{{ $row['last_edit'] }}</td>
                 </tr>

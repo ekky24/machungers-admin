@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use Kreait\Firebase;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
+use LaravelFCM\Message\OptionsBuilder;
+use LaravelFCM\Message\PayloadDataBuilder;
+use LaravelFCM\Message\PayloadNotificationBuilder;
+use FCM;
+use LaravelFCM\Message\Topics;
 
 class NotificationController extends Controller
 {
@@ -88,6 +93,8 @@ class NotificationController extends Controller
                 'last_edit' => $now,
                 'edited_by' => session()->get('authenticated')['key'],
             ]);
+
+            $this->sendIndividual('d5ClGGy1JJY:APA91bHF3soyeiSsf_rlUn21YLgH49-8V1YFb0M3ggP8ivdjNVqYG7OpPmFciurOPYW9eTQXQatYd-Ph5lfmoCykw9NyPjlLEQzonh-bmATeiXWNtPrssC7bcd6qdfeAkerMlM76SjqA', $request->input('judul'), $request->input('konten'));
         }
         elseif($request->has('fakultas')) {
             $this->ref->getChild($key)->set([
@@ -98,6 +105,8 @@ class NotificationController extends Controller
                 'last_edit' => $now,
                 'edited_by' => session()->get('authenticated')['key'],
             ]);
+
+            $this->sendTopic('news', $request->input('judul'), $request->input('konten'));
         }
         elseif($request->has('prodi')) {
             $this->ref->getChild($key)->set([
@@ -108,6 +117,8 @@ class NotificationController extends Controller
                 'last_edit' => $now,
                 'edited_by' => session()->get('authenticated')['key'],
             ]);
+
+            $this->sendTopic('news', $request->input('judul'), $request->input('konten'));
         }
         else {
             $this->ref->getChild($key)->set([
@@ -117,8 +128,59 @@ class NotificationController extends Controller
                 'last_edit' => $now,
                 'edited_by' => session()->get('authenticated')['key'],
             ]);
+
+            $this->sendTopic('news', $request->input('judul'), $request->input('konten'));
         }
 
         return redirect('/push')->with('success', 'Notifikasi berhasil diterbitkan');
+    }
+
+    public function sendIndividual($token, $judul, $konten) {
+        $optionBuilder = new OptionsBuilder();
+        $optionBuilder->setTimeToLive(60*20);
+
+        $notificationBuilder = new PayloadNotificationBuilder($judul);
+        $notificationBuilder->setBody($konten)
+                            ->setSound('default');
+
+        $dataBuilder = new PayloadDataBuilder();
+        $dataBuilder->addData(['a_data' => 'my_data']);
+
+        $option = $optionBuilder->build();
+        $notification = $notificationBuilder->build();
+        $data = $dataBuilder->build();
+
+
+        $downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
+
+        $downstreamResponse->numberSuccess();
+        $downstreamResponse->numberFailure();
+        $downstreamResponse->numberModification();
+
+        //return Array - you must remove all this tokens in your database
+        $downstreamResponse->tokensToDelete();
+
+        //return Array (key : oldToken, value : new token - you must change the token in your database )
+        $downstreamResponse->tokensToModify();
+
+        //return Array - you should try to resend the message to the tokens in the array
+        $downstreamResponse->tokensToRetry();
+    }
+
+    public function sendTopic($group, $judul, $konten) {
+        $notificationBuilder = new PayloadNotificationBuilder($judul);
+        $notificationBuilder->setBody($konten)
+                            ->setSound('default');
+
+        $notification = $notificationBuilder->build();
+
+        $topic = new Topics();
+        $topic->topic($group);
+
+        $topicResponse = FCM::sendToTopic($topic, null, $notification, null);
+
+        $topicResponse->isSuccess();
+        $topicResponse->shouldRetry();
+        $topicResponse->error();
     }
 }

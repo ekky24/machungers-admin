@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Kreait\Firebase;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
+use Illuminate\Support\Facades\Storage;
 
 class MahasiswaController extends Controller
 {
@@ -24,13 +25,12 @@ class MahasiswaController extends Controller
 
     public function show_all() {
         $data = $this->ref->getValue();
-        $fakultas_ref = $this->database->getReference('fakultas');
         $prodi_ref = $this->database->getReference('prodi');
 
         foreach ($data as $key => $row) {
-            $fakultas_key = $prodi_ref->getChild($row['prodi'])->getValue()['fakultas'];
+            $prodi = $prodi_ref->getChild($row['prodi'])->getValue();
             $row['key'] = $key;
-            $row['nama_fakultas'] = $fakultas_ref->getChild($fakultas_key)->getValue()['nama'];
+            $row['nama_prodi'] = $prodi['nama'];
             $all_data[] = $row;
         }
         return view('mahasiswa.show_all', compact('all_data'));
@@ -87,7 +87,7 @@ class MahasiswaController extends Controller
             'tempat_lahir' => $request->input('tempat_lahir'),
             'tgl_lahir' => $request->input('tgl_lahir'),
             'prodi' => $request->input('prodi'),
-            'img_url' => $path,
+            'img_url' => substr($path, 7),
             'last_edit' => $now,
             'edited_by' => session()->get('authenticated')['key'],
         ]);
@@ -136,7 +136,7 @@ class MahasiswaController extends Controller
             $extension = $request->file('gambar')->getClientOriginalExtension();
             $fileNameToStore = time().'.'.$extension;
             $path = $request->file('gambar')->storeAs('/public/uploadimg', $fileNameToStore);
-            Storage::delete($data['img_url']);
+            Storage::delete('public/' . $data['img_url']);
         } else {
             $path = $data['img_url'];
         }
@@ -147,7 +147,7 @@ class MahasiswaController extends Controller
             'tempat_lahir' => $request->input('tempat_lahir'),
             'tgl_lahir' => $request->input('tgl_lahir'),
             'prodi' => $request->input('prodi'),
-            'img_url' => $path,
+            'img_url' => substr($path, 7),
             'last_edit' => $now,
             'edited_by' => session()->get('authenticated')['key'],
         ]);
@@ -157,7 +157,7 @@ class MahasiswaController extends Controller
 
     public function delete($id) {
         $data = $this->database->getReference('mahasiswa/' . $id)->getValue();
-        Storage::delete($data['img_url']);
+        Storage::delete('public/' . $data['img_url']);
         $this->ref->getChild($id)->remove();
         return redirect('/mahasiswa')->with('success', 'Mahasiswa berhasil dihapus');
     }

@@ -58,7 +58,7 @@ class NewsletterController extends Controller
         $key = $this->ref->push()->getKey();
         $this->ref->getChild($key)->set([
             'nama' => $nama,
-            'path' => $path,
+            'path' => substr($path, 7),
             'last_edit' => $now,
             'edited_by' => session()->get('authenticated')['key'],
         ]);
@@ -68,7 +68,7 @@ class NewsletterController extends Controller
 
     public function delete($id) {
         $data = $this->database->getReference('newsletter/' . $id)->getValue();
-        Storage::delete($data['path']);
+        Storage::delete('public/' . $data['path']);
         $this->ref->getChild($id)->remove();
         return redirect('/newsletter')->with('success', 'Newsletter berhasil dihapus');
     }

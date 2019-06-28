@@ -83,7 +83,7 @@ class LifeAtMaChungController extends Controller
         $ref_upload = $this->database->getReference('lifeatmachung_upload');
         $key = $ref_upload->push()->getKey();
         $ref_upload->getChild($key)->set([
-            'img_url' => $path,
+            'img_url' => substr($path, 7),
             'last_edit' => $now,
             'edited_by' => session()->get('authenticated')['key'],
         ]);
@@ -131,7 +131,7 @@ class LifeAtMaChungController extends Controller
 
     public function delete_upload($id) {
     	$data = $this->database->getReference('lifeatmachung_upload/' . $id)->getValue();
-    	Storage::delete($data['img_url']);
+    	Storage::delete('public/' . $data['img_url']);
         $this->database->getReference('lifeatmachung_upload/' . $id)->remove();
         return redirect('/lifeatmachung/form')->with('success', 'Konten berhasil dihapus');
     }

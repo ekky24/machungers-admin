@@ -18,7 +18,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="data-table" class="table table-bordered table-hover">
+              <table id="data-table2" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>Nama Prodi</th>
@@ -32,7 +32,7 @@
                 <tr>
                   <td>{{ $row['nama'] }}</td>
                   <td>{{ $row['nama_fakultas'] }}</td>
-                  <td>{{ substr($row['profil'], 0, 40) }}</td>
+                  <td>@if(strlen($row['profil']) > 50) {{ substr($row['profil'], 0, 50) . " ..." }} @else {{ $row['profil'] }} @endif</td>
                   <td><center>
                     <a type="button" href="/prodi/edit/{{ $row['key'] }}" class="btn btn-table"><i class="fa fa-edit"></i></button>
                     <a type="button" href="/prodi/delete/{{ $row['key'] }}" class="btn btn-table btn-delete"><i class="fa fa-trash"></i></button>

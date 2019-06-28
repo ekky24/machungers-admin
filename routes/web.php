@@ -104,3 +104,5 @@ Route::get('/setting/form', 'SessionController@setting');
 Route::post('/session', 'SessionController@store');
 Route::post('/setting/{key}', 'SessionController@simpan_setting');
 Route::post('login', [ 'as' => 'login', 'uses' => 'SessionController@create']);
+
+Route::get('/storage/{path}/{filename}', 'SessionController@storage');

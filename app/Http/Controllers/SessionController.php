@@ -7,6 +7,8 @@ use Kreait\Firebase;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 use Hash;
 
 class SessionController extends Controller
@@ -114,5 +116,21 @@ class SessionController extends Controller
     public function logout() {
     	session()->forget('authenticated');
     	return redirect('/');
+    }
+
+    public function storage($path, $filename) {
+        $path = storage_path('app\\public\\' . $path . "\\" . $filename);
+
+        if (!File::exists($path)) {
+            abort(404);
+        }
+
+        $file = File::get($path);
+        $type = File::mimeType($path);
+
+        $response = Response::make($file, 200);
+        $response->header("Content-Type", $type);
+
+        return $response;
     }
 }

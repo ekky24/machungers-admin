@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Kreait\Firebase;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
+use Illuminate\Support\Facades\Storage;
 
 class FakultasController extends Controller
 {
@@ -62,7 +63,7 @@ class FakultasController extends Controller
         $this->ref->getChild($key)->set([
             'nama' => $request->input('nama'),
             'profil' => $request->input('profil'),
-            'img_url' => $path,
+            'img_url' => substr($path, 7),
             'last_edit' => $now,
             'edited_by' => session()->get('authenticated')['key'],
         ]);
@@ -93,7 +94,7 @@ class FakultasController extends Controller
             $extension = $request->file('gambar')->getClientOriginalExtension();
             $fileNameToStore = time().'.'.$extension;
             $path = $request->file('gambar')->storeAs('/public/uploadimg', $fileNameToStore);
-            Storage::delete($data['img_url']);
+            Storage::delete('public/' . $data['img_url']);
         } else {
             $path = $data['img_url'];
         }
@@ -101,7 +102,7 @@ class FakultasController extends Controller
         $this->ref->getChild($id)->set([
             'nama' => $request->input('nama'),
             'profil' => $request->input('profil'),
-            'img_url' => $path,
+            'img_url' => substr($path, 7),
             'last_edit' => $now,
             'edited_by' => session()->get('authenticated')['key'],
         ]);
@@ -111,7 +112,7 @@ class FakultasController extends Controller
 
     public function delete($id) {
         $data = $this->database->getReference('fakultas/' . $id)->getValue();
-        Storage::delete($data['img_url']);
+        Storage::delete('public/' . $data['img_url']);
         $this->ref->getChild($id)->remove();
         return redirect('/fakultas')->with('success', 'Fakultas berhasil dihapus');
     }
