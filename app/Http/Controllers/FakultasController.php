@@ -56,7 +56,7 @@ class FakultasController extends Controller
             $path = $request->file('gambar')->storeAs('/public/uploadimg', $fileNameToStore);
         }
         else {
-        	$path = "";
+        	$path = "/public";
         }
 
         $key = $this->ref->push()->getKey();
@@ -96,7 +96,7 @@ class FakultasController extends Controller
             $path = $request->file('gambar')->storeAs('/public/uploadimg', $fileNameToStore);
             Storage::delete('public/' . $data['img_url']);
         } else {
-            $path = $data['img_url'];
+            $path = "/public" . $data['img_url'];
         }
 
         $this->ref->getChild($id)->set([

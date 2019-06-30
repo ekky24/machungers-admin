@@ -95,7 +95,7 @@ class BeritaController extends Controller
             $path = $request->file('gambar')->storeAs('/public/uploadimg', $fileNameToStore);
             Storage::delete('public/' . $data['img_url']);
         } else {
-            $path = $data['img_url'];
+            $path = "/public" . $data['img_url'];
         }
 
         $this->ref->getChild($id)->set([

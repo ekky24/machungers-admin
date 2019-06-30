@@ -84,6 +84,16 @@ class NotificationController extends Controller
         if ($request->has('nim')) {
             $temp_nim = str_replace(' ', '', $request->input('nim'));
             $nim = explode(",", $temp_nim);
+            $fcm_tokens = [];
+            $data = $this->database->getReference('mahasiswa')->getValue();
+
+    		foreach ($data as $key => $row_data) {
+	            foreach ($nim as $row_nim) {
+	            	if($row_data['nim'] == $row_nim) {
+	            		array_push($fcm_tokens, $row_data['fcm_token']);
+	            	}
+	            }
+	        }
             
             $this->ref->getChild($key)->set([
                 'judul' => $request->input('judul'),
@@ -94,7 +104,7 @@ class NotificationController extends Controller
                 'edited_by' => session()->get('authenticated')['key'],
             ]);
 
-            $this->sendIndividual('d5ClGGy1JJY:APA91bHF3soyeiSsf_rlUn21YLgH49-8V1YFb0M3ggP8ivdjNVqYG7OpPmFciurOPYW9eTQXQatYd-Ph5lfmoCykw9NyPjlLEQzonh-bmATeiXWNtPrssC7bcd6qdfeAkerMlM76SjqA', $request->input('judul'), $request->input('konten'));
+            $this->sendIndividual($fcm_tokens, $request->input('judul'), $request->input('konten'));
         }
         elseif($request->has('fakultas')) {
             $this->ref->getChild($key)->set([
@@ -106,7 +116,9 @@ class NotificationController extends Controller
                 'edited_by' => session()->get('authenticated')['key'],
             ]);
 
-            $this->sendTopic('news', $request->input('judul'), $request->input('konten'));
+            foreach ($request->input('fakultas') as $row) {
+            	$this->sendTopic($row, $request->input('judul'), $request->input('konten'));	
+            }
         }
         elseif($request->has('prodi')) {
             $this->ref->getChild($key)->set([
@@ -118,9 +130,13 @@ class NotificationController extends Controller
                 'edited_by' => session()->get('authenticated')['key'],
             ]);
 
-            $this->sendTopic('news', $request->input('judul'), $request->input('konten'));
+            foreach ($request->input('prodi') as $row) {
+            	$this->sendTopic($row, $request->input('judul'), $request->input('konten'));	
+            }
         }
         else {
+        	$data = $this->database->getReference('fakultas')->getValue();
+
             $this->ref->getChild($key)->set([
                 'judul' => $request->input('judul'),
                 'konten' => $request->input('konten'),
@@ -129,7 +145,9 @@ class NotificationController extends Controller
                 'edited_by' => session()->get('authenticated')['key'],
             ]);
 
-            $this->sendTopic('news', $request->input('judul'), $request->input('konten'));
+    		foreach ($data as $key => $row_data) {
+	       		$this->sendTopic($key, $request->input('judul'), $request->input('konten'));	
+	        }
         }
 
         return redirect('/push')->with('success', 'Notifikasi berhasil diterbitkan');

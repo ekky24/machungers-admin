@@ -119,7 +119,8 @@ class SessionController extends Controller
     }
 
     public function storage($path, $filename) {
-        $path = storage_path('app\\public\\' . $path . "\\" . $filename);
+        $path = storage_path('app/public/' . $path . "/" . $filename);
+        #return $path;
 
         if (!File::exists($path)) {
             abort(404);
