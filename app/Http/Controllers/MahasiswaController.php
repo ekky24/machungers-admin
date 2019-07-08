@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class MahasiswaController extends Controller
 {
-	private $ref;
+    private $ref;
     private $database;
 
     public function __construct() {
@@ -37,8 +37,8 @@ class MahasiswaController extends Controller
     }
 
     public function form() {
-    	$ref_fakultas = $this->database->getReference('fakultas');
-    	$ref_prodi = $this->database->getReference('prodi');
+        $ref_fakultas = $this->database->getReference('fakultas');
+        $ref_prodi = $this->database->getReference('prodi');
         $data_fakultas = $ref_fakultas->getValue();
         $data_prodi = $ref_prodi->getValue();
 
@@ -55,8 +55,8 @@ class MahasiswaController extends Controller
     }
 
     public function simpan(Request $request) {
-    	// PERLU UBAH KONFIGURASI DI PHP.INI (POST_SIZE DAN MAX UPLOAD SIZE)
-    	$this->validate($request , [
+        // PERLU UBAH KONFIGURASI DI PHP.INI (POST_SIZE DAN MAX UPLOAD SIZE)
+        $this->validate($request , [
             'nim' => 'required|numeric',
             'nama' => 'required',
             'tempat_lahir' => 'required',
@@ -90,14 +90,15 @@ class MahasiswaController extends Controller
             'img_url' => substr($path, 7),
             'last_edit' => $now,
             'edited_by' => session()->get('authenticated')['key'],
+            'login' => false,
         ]);
 
         return redirect('/mahasiswa')->with('success', 'Mahasiswa berhasil ditambahkan');
     }
 
     public function edit($id) {
-    	$ref_fakultas = $this->database->getReference('fakultas');
-    	$ref_prodi = $this->database->getReference('prodi');
+        $ref_fakultas = $this->database->getReference('fakultas');
+        $ref_prodi = $this->database->getReference('prodi');
         $data_fakultas = $ref_fakultas->getValue();
         $data_prodi = $ref_prodi->getValue();
 
@@ -151,6 +152,7 @@ class MahasiswaController extends Controller
             'img_url' => substr($path, 7),
             'last_edit' => $now,
             'edited_by' => session()->get('authenticated')['key'],
+            'login' => $data['login'],
         ]);
 
         return redirect('/mahasiswa')->with('success', 'Mahasiswa berhasil diubah');
@@ -171,6 +173,7 @@ class MahasiswaController extends Controller
             'img_url' => $data['img_url'],
             'last_edit' => $now,
             'edited_by' => session()->get('authenticated')['key'],
+            'login' => $data['login'],
         ]);
 
         return redirect('/mahasiswa')->with('success', 'Password berhasil direset');
@@ -186,57 +189,30 @@ class MahasiswaController extends Controller
     public function ajax_fakultas() {
         $data = $this->ref->getValue();
         $prodi_arr = [];
-        $prodi_arr_temp = [];
-        $sama = false;
 
         // PENGHITUNGAN MAHASISWA BERDASARKAN PRODI
-        foreach ($data as $key => $row) {
-            $data = $this->database->getReference('prodi/' . $row['prodi'])->getValue();
-            array_push($prodi_arr_temp, $data);
-
-            if(count($prodi_arr) > 0) {
-                foreach ($prodi_arr as $i => $row_prodi) {
-                    if($row['prodi'] == $row_prodi[0]) {
-                        $sama = true;
-                        $prodi_arr[$i] = [$row['prodi'], $data['nama'], $row_prodi[2] + 1];
-                        break;
-                    }
+        $all_prodi = $this->database->getReference('prodi')->getValue();
+        foreach ($all_prodi as $key_prodi => $row_prodi) {
+            $count = 0;
+            foreach ($data as $row_mahasiswa) {
+                if($key_prodi == $row_mahasiswa['prodi']) {
+                    $count += 1;
                 }
-
-                if(!$sama) {
-                    array_push($prodi_arr, [$row['prodi'], $data['nama'], 1]);
-                }
-                $sama = false;
             }
-            else {
-                array_push($prodi_arr, [$row['prodi'], $data['nama'], 1]);
-            }
+            array_push($prodi_arr, [$key_prodi, $row_prodi['nama'], $count, $row_prodi['fakultas']]);
         }
 
-        $fakultas_arr = [];
-        $sama = false;
         // PENGHITUNGAN MAHASISWA BERDASARKAN FAKULTAS
-        foreach ($prodi_arr as $i => $row_prodi) {
-            $data = $prodi_arr_temp[$i];
-            $data_fakultas = $this->database->getReference('fakultas/' . $data['fakultas'])->getValue();
-
-            if(count($fakultas_arr) > 0) {
-                foreach ($fakultas_arr as $i => $row_fakultas) {
-                    if($data['fakultas'] == $row_fakultas[0]) {
-                        $sama = true;
-                        $fakultas_arr[$i] = [$data['fakultas'], $data_fakultas['nama'], $row_fakultas[2] + $row_prodi[2]];
-                        break;
-                    }
+        $fakultas_arr = [];
+        $all_fakultas = $this->database->getReference('fakultas')->getValue();
+        foreach ($all_fakultas as $key_fakultas => $row_fakultas) {
+            $count = 0;
+            foreach ($prodi_arr as $row_prodi) {
+                if($key_fakultas == $row_prodi[3]) {
+                    $count += $row_prodi[2];
                 }
-
-                if(!$sama) {
-                    array_push($fakultas_arr, [$data['fakultas'], $data_fakultas['nama'], $row_prodi[2]]);
-                }
-                $sama = false;
             }
-            else {
-                array_push($fakultas_arr, [$data['fakultas'], $data_fakultas['nama'], $row_prodi[2]]);
-            }
+            array_push($fakultas_arr, [$key_fakultas, $row_fakultas['nama'], $count]);
         }
 
         $final_arr['prodi'] = $prodi_arr;
