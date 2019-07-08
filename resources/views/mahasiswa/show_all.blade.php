@@ -34,6 +34,7 @@
                   <td>{{ $row['nama'] }}</td>
                   <td>{{ $row['nama_prodi'] }}</td>
                   <td><center>
+                    <a type="button" href="/mahasiswa/edit/{{ $row['key'] }}/resetpass" class="btn btn-table btn-reset"><i class="fa fa-refresh"></i></button>
                     <a type="button" href="/mahasiswa/edit/{{ $row['key'] }}" class="btn btn-table"><i class="fa fa-edit"></i></button>
                     <a type="button" href="/mahasiswa/delete/{{ $row['key'] }}" class="btn btn-table btn-delete"><i class="fa fa-trash"></i></button>
                   </center></td>

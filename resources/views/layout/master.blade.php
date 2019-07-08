@@ -145,6 +145,23 @@
         })
       })
 
+      $('.btn-reset').click(function(e) {
+        e.preventDefault()
+        Swal.fire({
+          title: 'Apakah anda yakin?',
+          text: "Data yang telah diubah tidak bisa dikembalikan lagi.",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ya'
+        }).then((result) => {
+          if (result.value) {
+            window.location = $(this).attr("href")
+          }
+        })
+      })
+
       setTimeout(function() {
         $('.alert').slideDown(1000)
         setTimeout(function() {

@@ -76,6 +76,7 @@ Route::post('/user/{key}','UserController@simpan_edit');
 Route::get('/mahasiswa/form','MahasiswaController@form');
 Route::get('/mahasiswa','MahasiswaController@show_all');
 Route::get('/mahasiswa/edit/{key}','MahasiswaController@edit');
+Route::get('/mahasiswa/edit/{key}/resetpass','MahasiswaController@resetpass');
 Route::get('/mahasiswa/delete/{key}','MahasiswaController@delete');
 Route::get('/mahasiswa_upload/delete/{key}','MahasiswaController@delete_upload');
 Route::get('/ajax_mahasiswa_fakultas','MahasiswaController@ajax_fakultas');

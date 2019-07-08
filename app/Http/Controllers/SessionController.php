@@ -23,7 +23,7 @@ class SessionController extends Controller
             ->create();
         $this->database = $firebase->getDatabase();
         $this->ref = $this->database->getReference('user');
-        return $this->middleware('usersession')->except(['create', 'store']);
+        return $this->middleware('usersession')->except(['create', 'store', 'storage']);
     }
 
     public function create() {

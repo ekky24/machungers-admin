@@ -62,7 +62,7 @@
                 <tbody>
                 @foreach($all_data as $row)
                 <tr>
-                  <?php $url = str_replace('public', '/storage', $row['img_url']) ?>
+                  <?php $url = '/storage/' . $row['img_url'] ?>
                   <td><img src="{{ $url }}" height="80px"></td>
                   <td>{{ $url }}</td>
                   <td><center>

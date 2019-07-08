@@ -128,7 +128,7 @@ class MahasiswaController extends Controller
 
         date_default_timezone_set('Asia/Jakarta');
         $now = date('d/m/Y h:i:s a', time());
-        $data = $this->database->getReference('agenda/' . $id)->getValue();
+        $data = $this->database->getReference('mahasiswa/' . $id)->getValue();
 
         if ($request->hasFile('gambar')) {
             $filenameWithExt = $request->file('gambar')->getClientOriginalName();
@@ -145,6 +145,7 @@ class MahasiswaController extends Controller
             'nim' => $request->input('nim'),
             'nama' => $request->input('nama'),
             'tempat_lahir' => $request->input('tempat_lahir'),
+            'password' => $data['password'],
             'tgl_lahir' => $request->input('tgl_lahir'),
             'prodi' => $request->input('prodi'),
             'img_url' => substr($path, 7),
@@ -153,6 +154,26 @@ class MahasiswaController extends Controller
         ]);
 
         return redirect('/mahasiswa')->with('success', 'Mahasiswa berhasil diubah');
+    }
+
+    public function resetpass(Request $request, $id) {
+        date_default_timezone_set('Asia/Jakarta');
+        $now = date('d/m/Y h:i:s a', time());
+        $data = $this->database->getReference('mahasiswa/' . $id)->getValue();
+
+        $this->ref->getChild($id)->set([
+            'nim' => $data['nim'],
+            'nama' => $data['nama'],
+            'tempat_lahir' => $data['tempat_lahir'],
+            'password' => '25d55ad283aa400af464c76d713c07ad',
+            'tgl_lahir' => $data['tgl_lahir'],
+            'prodi' => $data['prodi'],
+            'img_url' => $data['img_url'],
+            'last_edit' => $now,
+            'edited_by' => session()->get('authenticated')['key'],
+        ]);
+
+        return redirect('/mahasiswa')->with('success', 'Password berhasil direset');
     }
 
     public function delete($id) {
