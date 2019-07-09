@@ -26,11 +26,16 @@ class MahasiswaController extends Controller
     public function show_all() {
         $data = $this->ref->getValue();
         $prodi_ref = $this->database->getReference('prodi');
+        $data_prodi = $prodi_ref->getValue();
 
         foreach ($data as $key => $row) {
-            $prodi = $prodi_ref->getChild($row['prodi'])->getValue();
+            foreach ($data_prodi as $key_prodi => $row_prodi) {
+                if ($row['prodi'] == $key_prodi) {
+                    $row['nama_prodi'] = $row_prodi['nama'];
+                    break;
+                }
+            }
             $row['key'] = $key;
-            $row['nama_prodi'] = $prodi['nama'];
             $all_data[] = $row;
         }
         return view('mahasiswa.show_all', compact('all_data'));
@@ -199,7 +204,33 @@ class MahasiswaController extends Controller
                     $count += 1;
                 }
             }
-            array_push($prodi_arr, [$key_prodi, $row_prodi['nama'], $count, $row_prodi['fakultas']]);
+
+            if($row_prodi['nama'] == "Teknik Informatika") {
+                $new_name = "TIF";
+            }
+            elseif($row_prodi['nama'] == "Sastra Inggris") {
+                $new_name = "Inggris";
+            }
+            elseif($row_prodi['nama'] == "Teknik Industri") {
+                $new_name = "Industri";
+            }
+            elseif($row_prodi['nama'] == "Pendidikan Bahasa Mandarin") {
+                $new_name = "Mandarin";
+            }
+            else {
+                $prodi_word = explode(' ', $row_prodi['nama']);
+                if(count($prodi_word) > 1) {
+                    $new_name = "";
+                    foreach ($prodi_word as $row) {
+                        $new_name = $new_name . strtoupper(substr($row, 0, 1));
+                    }
+                }
+                else {
+                    $new_name = $row_prodi['nama'];
+                }
+            }
+
+            array_push($prodi_arr, [$key_prodi, $new_name, $count, $row_prodi['fakultas']]);
         }
 
         // PENGHITUNGAN MAHASISWA BERDASARKAN FAKULTAS
@@ -218,5 +249,71 @@ class MahasiswaController extends Controller
         $final_arr['prodi'] = $prodi_arr;
         $final_arr['fakultas'] = $fakultas_arr;
         return json_encode($final_arr);
+    }
+
+    public function form_csv() {
+        return view('mahasiswa.form_csv');
+    }
+
+    public function simpan_csv(Request $request) {
+        $file = public_path('csv/mahasiswa.csv');
+        $mahasiswa_arr = $this->csvToArray($file);
+        $prodi_arr = $this->database->getReference('prodi')->getValue();
+        $mahasiswa_real_ref = $this->database->getReference('mahasiswa_real');
+        date_default_timezone_set('Asia/Jakarta');
+        $now = date('d/m/Y h:i:s a', time());
+        $handle = fopen($file, 'w');
+        $header = false;
+
+        for ($i = 0; $i < count($mahasiswa_arr); $i++) {
+            if ($i < 30) {
+                foreach ($prodi_arr as $key_prodi => $row) {
+                    if($mahasiswa_arr[$i]['prodi'] == $row['nama']) {
+                        $key = $mahasiswa_real_ref->push()->getKey();
+                        $mahasiswa_real_ref->getChild($key)->set([
+                            'nim' => $mahasiswa_arr[$i]['nim'],
+                            'nama' => $mahasiswa_arr[$i]['nama'],
+                            'password' => '25d55ad283aa400af464c76d713c07ad',
+                            'tempat_lahir' => '',
+                            'tgl_lahir' => $mahasiswa_arr[$i]['tgl_lahir'],
+                            'prodi' => $key_prodi,
+                            'img_url' => '',
+                            'last_edit' => $now,
+                            'edited_by' => session()->get('authenticated')['key'],
+                            'login' => false,
+                        ]);
+                    }
+                }   
+            }
+            else {
+                if (!$header) {
+                    fputcsv($handle, ['nama','tgl_lahir','nim','tahun_masuk','prodi']);
+                    $header = true;
+                }
+                fputcsv($handle, $mahasiswa_arr[$i]);
+            }
+        }
+        fclose($handle);
+    }
+
+    function csvToArray($filename = '', $delimiter = ',') {
+        if (!file_exists($filename) || !is_readable($filename))
+            return false;
+
+        $header = null;
+        $data = array();
+        if (($handle = fopen($filename, 'r')) !== false)
+        {
+            while (($row = fgetcsv($handle, 1000, $delimiter)) !== false)
+            {
+                if (!$header)
+                    $header = $row;
+                else
+                    $data[] = array_combine($header, $row);
+            }
+            fclose($handle);
+        }
+
+        return $data;
     }
 }

@@ -162,6 +162,19 @@
         })
       })
 
+      function simpan_csv() {
+        $('.mulai_simpan_csv').prop('disabled', true);
+        var xhr = $.ajax({
+          url: '/mahasiswa/mulai_form_csv',
+          type:"GET",
+          success:function(msg){
+            $('.mulai_simpan_csv').prop('disabled', false);
+            simpan_csv()
+          }
+        })
+      }
+      $('.mulai_simpan_csv').click(simpan_csv)
+
       setTimeout(function() {
         $('.alert').slideDown(1000)
         setTimeout(function() {
