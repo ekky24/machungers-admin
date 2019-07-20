@@ -47,15 +47,28 @@ class LifeAtMaChungController extends Controller
     	$this->validate($request , [
             'judul' => 'required',
             'konten' => 'required',
+            'gambar' => 'nullable',
         ]);
 
         date_default_timezone_set('Asia/Jakarta');
         $now = date('d/m/Y h:i:s a', time());
 
+        if ($request->hasFile('gambar')) {
+            $filenameWithExt = $request->file('gambar')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('gambar')->getClientOriginalExtension();
+            $fileNameToStore = time().'.'.$extension;
+            $path = $request->file('gambar')->storeAs('/public/uploadimg', $fileNameToStore);
+        } else {
+            $fileNameToStore = 'noimage.jpg';
+            $path = "/public";
+        }
+
         $key = $this->ref->push()->getKey();
         $this->ref->getChild($key)->set([
             'judul' => $request->input('judul'),
             'konten' => $request->input('konten'),
+            'img_url' => substr($path, 7),
             'last_edit' => $now,
             'edited_by' => session()->get('authenticated')['key'],
         ]);
@@ -88,7 +101,7 @@ class LifeAtMaChungController extends Controller
             'edited_by' => session()->get('authenticated')['key'],
         ]);
 
-        return redirect('/lifeatmachung/form')->with('success', 'Media berhasil diupload');
+        return redirect('/lifeatmachung')->with('success', 'Media berhasil diupload');
     }
 
     public function edit($id) {
@@ -108,15 +121,28 @@ class LifeAtMaChungController extends Controller
         $this->validate($request , [
             'judul' => 'required',
             'konten' => 'required',
+            'gambar' => 'nullable',
         ]);
 
         date_default_timezone_set('Asia/Jakarta');
         $now = date('d/m/Y h:i:s a', time());
         $data = $this->database->getReference('lifeatmachung/' . $id)->getValue();
 
+        if ($request->hasFile('gambar')) {
+            $filenameWithExt = $request->file('gambar')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('gambar')->getClientOriginalExtension();
+            $fileNameToStore = time().'.'.$extension;
+            $path = $request->file('gambar')->storeAs('/public/uploadimg', $fileNameToStore);
+            Storage::delete('public/' . $data['img_url']);
+        } else {
+            $path = "/public" . $data['img_url'];
+        }
+
         $this->ref->getChild($id)->set([
             'judul' => $request->input('judul'),
             'konten' => $request->input('konten'),
+            'img_url' => substr($path, 7),
             'last_edit' => $now,
             'edited_by' => session()->get('authenticated')['key'],
         ]);
@@ -133,6 +159,6 @@ class LifeAtMaChungController extends Controller
     	$data = $this->database->getReference('lifeatmachung_upload/' . $id)->getValue();
     	Storage::delete('public/' . $data['img_url']);
         $this->database->getReference('lifeatmachung_upload/' . $id)->remove();
-        return redirect('/lifeatmachung/form')->with('success', 'Konten berhasil dihapus');
+        return redirect('/lifeatmachung')->with('success', 'Konten berhasil dihapus');
     }
 }

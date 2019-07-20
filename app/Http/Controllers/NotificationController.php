@@ -79,7 +79,7 @@ class NotificationController extends Controller
 
         date_default_timezone_set('Asia/Jakarta');
         $now = date('d/m/Y h:i:s a', time());
-        $key = $this->ref->push()->getKey();
+        $key_firebase = $this->ref->push()->getKey();
         
         if ($request->has('nim')) {
             $temp_nim = str_replace(' ', '', $request->input('nim'));
@@ -95,7 +95,7 @@ class NotificationController extends Controller
 	            }
 	        }
             
-            $this->ref->getChild($key)->set([
+            $this->ref->getChild($key_firebase)->set([
                 'judul' => $request->input('judul'),
                 'konten' => $request->input('konten'),
                 'nim' => $nim,
@@ -107,7 +107,7 @@ class NotificationController extends Controller
             $this->sendIndividual($fcm_tokens, $request->input('judul'), $request->input('konten'));
         }
         elseif($request->has('fakultas')) {
-            $this->ref->getChild($key)->set([
+            $this->ref->getChild($key_firebase)->set([
                 'judul' => $request->input('judul'),
                 'konten' => $request->input('konten'),
                 'fakultas' => $request->input('fakultas'),
@@ -121,7 +121,7 @@ class NotificationController extends Controller
             }
         }
         elseif($request->has('prodi')) {
-            $this->ref->getChild($key)->set([
+            $this->ref->getChild($key_firebase)->set([
                 'judul' => $request->input('judul'),
                 'konten' => $request->input('konten'),
                 'prodi' => $request->input('prodi'),
@@ -137,7 +137,7 @@ class NotificationController extends Controller
         else {
         	$data = $this->database->getReference('fakultas')->getValue();
 
-            $this->ref->getChild($key)->set([
+            $this->ref->getChild($key_firebase)->set([
                 'judul' => $request->input('judul'),
                 'konten' => $request->input('konten'),
                 'type' => 'all',

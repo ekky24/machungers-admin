@@ -74,7 +74,7 @@ class SessionController extends Controller
         $this->validate($request , [
             'username' => 'required',
             'nama_departemen' => 'required',
-            'kontak' => 'required',
+            'kontak' => 'nullable',
             'password_lama' => 'nullable',
             'password_baru' => 'nullable',
             'konfirmasi_password' => 'nullable',
@@ -101,10 +101,17 @@ class SessionController extends Controller
             }
         }
 
+        if ($request->input('kontak') != "") {
+            $kontak = $request->input('kontak');
+        }
+        else {
+            $kontak = "";
+        }
+
         $this->ref->getChild($id)->set([
             'username' => $request->input('username'),
             'nama_departemen' => $request->input('nama_departemen'),
-            'kontak' => $request->input('kontak'),
+            'kontak' => $kontak,
             'level' => $data['level'],
             'last_login' => $data['last_login'],
             'password' => Hash::make($password),

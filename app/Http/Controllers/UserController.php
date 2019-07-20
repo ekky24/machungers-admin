@@ -45,7 +45,7 @@ class UserController extends Controller
     	$this->validate($request , [
             'username' => 'required',
             'nama_departemen' => 'required',
-            'kontak' => 'required',
+            'kontak' => 'nullable',
             'password' => 'required',
             'konfirmasi_password' => 'required',
             'level' => 'required',
@@ -57,11 +57,18 @@ class UserController extends Controller
             ]);
         }
 
+        if ($request->input('kontak') != "") {
+            $kontak = $request->input('kontak');
+        }
+        else {
+            $kontak = "";
+        }
+
         $key = $this->ref->push()->getKey();
         $this->ref->getChild($key)->set([
             'username' => $request->input('username'),
             'nama_departemen' => $request->input('nama_departemen'),
-            'kontak' => $request->input('kontak'),
+            'kontak' => $kontak,
             'password' => Hash::make($request->input('password')),
             'level' => $request->input('level'),
             'last_login' => '00/00/0000',
@@ -80,7 +87,7 @@ class UserController extends Controller
         $this->validate($request , [
             'username' => 'required',
             'nama_departemen' => 'required',
-            'kontak' => 'required',
+            'kontak' => 'nullable',
             'password' => 'nullable',
             'konfirmasi_password' => 'nullable',
             'level' => 'required',
@@ -100,10 +107,17 @@ class UserController extends Controller
             }
         }
 
+        if ($request->input('kontak') != "") {
+            $kontak = $request->input('kontak');
+        }
+        else {
+            $kontak = "";
+        }
+
         $this->ref->getChild($id)->set([
             'username' => $request->input('username'),
             'nama_departemen' => $request->input('nama_departemen'),
-            'kontak' => $request->input('kontak'),
+            'kontak' => $kontak,
             'level' => $request->input('level'),
             'last_login' => $data['last_login'],
             'password' => Hash::make($password),

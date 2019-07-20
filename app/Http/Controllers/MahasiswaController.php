@@ -258,6 +258,38 @@ class MahasiswaController extends Controller
         return view('mahasiswa.form_csv');
     }
 
+    public function ubah_tgl_lahir() {
+        $data = $this->ref->getValue();
+        
+        foreach ($data as $key => $row) {
+            if($row['tgl_lahir'] != '00/00/00' and $row['tgl_lahir'] != '') {
+                $mhs = $this->database->getReference('mahasiswa/' . $key)->getValue();
+                $explode = explode('/', $mhs['tgl_lahir']);
+                if (count($explode) == 3) {
+                    $new_tgl_lahir = $explode[1] . '/' . $explode[0] . '/' . $explode[2];
+                }
+                else {
+                    $new_tgl_lahir = '00/00/00';
+                }
+
+                $this->ref->getChild($key)->set([
+                    'nim' => $mhs['nim'],
+                    'nama' => $mhs['nama'],
+                    'tempat_lahir' => $mhs['tempat_lahir'],
+                    'password' => $mhs['password'],
+                    'fcm_token' => $mhs['fcm_token'],
+                    'tgl_lahir' => $new_tgl_lahir,
+                    'prodi' => $mhs['prodi'],
+                    'img_url' => $mhs['img_url'],
+                    'last_edit' => $mhs['last_edit'],
+                    'edited_by' => session()->get('authenticated')['key'],
+                    'login' => $mhs['login'],
+                ]);
+            }
+        }
+        return redirect('/mahasiswa')->with('success', 'Tanggal lahir berhasil diubah');
+    }
+
     public function simpan_csv(Request $request) {
         $file = public_path('csv/mahasiswa.csv');
         $mahasiswa_arr = $this->csvToArray($file);
@@ -269,7 +301,7 @@ class MahasiswaController extends Controller
         $header = false;
 
         for ($i = 0; $i < count($mahasiswa_arr); $i++) {
-            if ($i < 10) {
+            if ($i < 30) {
                 foreach ($prodi_arr as $key_prodi => $row) {
                     if($mahasiswa_arr[$i]['prodi'] == $row['nama']) {
                         $key = $mahasiswa_real_ref->push()->getKey();

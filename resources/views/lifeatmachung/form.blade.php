@@ -63,8 +63,8 @@
                 @foreach($all_data as $row)
                 <tr>
                   <?php $url = '/storage/' . $row['img_url'] ?>
-                  <td><img src="{{ $url }}" height="80px"></td>
-                  <td>{{ $url }}</td>
+                  <td><img src="{{ 'http://desakarangwidoro.online' . $url }}" height="80px"></td>
+                  <td>{{ 'http://desakarangwidoro.online' . $url }}</td>
                   <td><center>
                     <a type="button" href="/lifeatmachung_upload/delete/{{ $row['key'] }}" class="btn btn-table btn-delete"><i class="fa fa-trash"></i></a>
                   </center></td>
@@ -83,13 +83,19 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form class="form-horizontal" method="post" action="@isset($data) /lifeatmachung/{{ $data['key'] }} @else /lifeatmachung @endif">
+            <form class="form-horizontal" method="post" action="@isset($data) /lifeatmachung/{{ $data['key'] }} @else /lifeatmachung @endif" enctype="multipart/form-data">
               {{ csrf_field() }}
               <div class="box-body">
                 <div class="form-group">
                   <label for="judul" class="col-sm-2 control-label">Judul</label>
                   <div class="col-sm-10">
                     <input type="text" class="form-control" placeholder="Judul" name="judul" value="@isset($data) {{ $data['judul'] }} @endif">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="konten" class="col-sm-2 control-label">Gambar Cover</label>
+                  <div class="col-sm-10">
+                    <input type="file" accept="image/*" name="gambar">
                   </div>
                 </div>
                 <div class="form-group">

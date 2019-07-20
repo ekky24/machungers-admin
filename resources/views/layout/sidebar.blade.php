@@ -87,7 +87,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="/lifeatmachung"><i class="fa fa-circle-o"></i> List</a></li>
-            <li><a href="/lifeatmachung/form"><i class="fa fa-circle-o"></i> Form</a></li>
+            <!--<li><a href="/lifeatmachung/form"><i class="fa fa-circle-o"></i> Form</a></li>-->
           </ul>
         </li>
         <li class="treeview">
