@@ -89,6 +89,7 @@ class MahasiswaController extends Controller
             'nim' => $request->input('nim'),
             'nama' => $request->input('nama'),
             'password' => '25d55ad283aa400af464c76d713c07ad',
+            'fcm_token' => '',
             'tempat_lahir' => $request->input('tempat_lahir'),
             'tgl_lahir' => $request->input('tgl_lahir'),
             'prodi' => $request->input('prodi'),
@@ -152,6 +153,7 @@ class MahasiswaController extends Controller
             'nama' => $request->input('nama'),
             'tempat_lahir' => $request->input('tempat_lahir'),
             'password' => $data['password'],
+            'fcm_token' => $data['fcm_token'],
             'tgl_lahir' => $request->input('tgl_lahir'),
             'prodi' => $request->input('prodi'),
             'img_url' => substr($path, 7),
@@ -173,6 +175,7 @@ class MahasiswaController extends Controller
             'nama' => $data['nama'],
             'tempat_lahir' => $data['tempat_lahir'],
             'password' => '25d55ad283aa400af464c76d713c07ad',
+            'fcm_token' => $data['fcm_token'],
             'tgl_lahir' => $data['tgl_lahir'],
             'prodi' => $data['prodi'],
             'img_url' => $data['img_url'],
@@ -259,14 +262,14 @@ class MahasiswaController extends Controller
         $file = public_path('csv/mahasiswa.csv');
         $mahasiswa_arr = $this->csvToArray($file);
         $prodi_arr = $this->database->getReference('prodi')->getValue();
-        $mahasiswa_real_ref = $this->database->getReference('mahasiswa_real');
+        $mahasiswa_real_ref = $this->database->getReference('mahasiswa');
         date_default_timezone_set('Asia/Jakarta');
         $now = date('d/m/Y h:i:s a', time());
         $handle = fopen($file, 'w');
         $header = false;
 
         for ($i = 0; $i < count($mahasiswa_arr); $i++) {
-            if ($i < 30) {
+            if ($i < 10) {
                 foreach ($prodi_arr as $key_prodi => $row) {
                     if($mahasiswa_arr[$i]['prodi'] == $row['nama']) {
                         $key = $mahasiswa_real_ref->push()->getKey();
@@ -274,6 +277,7 @@ class MahasiswaController extends Controller
                             'nim' => $mahasiswa_arr[$i]['nim'],
                             'nama' => $mahasiswa_arr[$i]['nama'],
                             'password' => '25d55ad283aa400af464c76d713c07ad',
+                            'fcm_token' => '',
                             'tempat_lahir' => '',
                             'tgl_lahir' => $mahasiswa_arr[$i]['tgl_lahir'],
                             'prodi' => $key_prodi,
